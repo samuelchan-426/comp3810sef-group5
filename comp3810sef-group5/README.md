@@ -11,7 +11,6 @@ Qiu Yiu Fung, 13488063
  - package.json: dependencies: express, mongodb, ejs, cookie-session, bcrypt
  - public (folder): styles.css for styling
  - views (folder): login.ejs, signup.ejs, todos.ejs, edit.ejs
- - models (folder): empty
 
 **3. The cloud-based server URL:**
 comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
@@ -29,3 +28,4 @@ comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
    PUT /api/todos/:id → curl -X PUT ...
 
    DELETE /api/todos/:id → curl -X DELETE ...
+
