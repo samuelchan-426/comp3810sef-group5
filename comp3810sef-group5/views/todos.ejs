@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Todos</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Your Todo List</h1>
+  <a href="/logout">Logout</a>
+
+  <h2>Create New Todo</h2>
+  <form action="/todos" method="POST">
+    <input type="text" name="title" placeholder="Title" required><br>
+    <input type="text" name="description" placeholder="Description"><br>
+    <button>Add Todo</button>
+  </form>
+
+  <h2>Search Todos</h2>
+  <form action="/todos" method="GET">
+    <input type="text" name="search" value="<%= search %>" placeholder="Search by title...">
+    <button>Search</button>
+  </form>
+
+  <h2>Todo List</h2>
+  <% if (todos.length === 0) { %>
+    <p>No todos found.</p>
+  <% } else { %>
+    <ul>
+      <% todos.forEach(todo => { %>
+        <li>
+          <strong><%= todo.title %></strong><br>
+          <%= todo.description || '(No description)' %>
+          <div style="margin-top: 8px;">
+            <a href="/todos/edit/<%= todo._id %>">Edit</a>
+            <form action="/todos/delete/<%= todo._id %>" method="POST" style="display:inline; margin-left:10px;">
+              <button style="background:red;">Delete</button>
+            </form>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</body>
+</html>

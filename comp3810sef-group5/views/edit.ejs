@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Todo</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Edit Todo</h1>
+  <form action="/todos/update/<%= todo._id %>" method="POST">
+    <input type="text" name="title" value="<%= todo.title %>" required><br>
+    <input type="text" name="description" value="<%= todo.description %>"><br>
+    <button>Update</button>
+  </form>
+  <br>
+  <a href="/todos">Back to List</a>
+</body>
+</html>
