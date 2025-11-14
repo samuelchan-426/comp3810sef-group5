@@ -14,7 +14,7 @@ Qiu Yiu Fung, 13488063
  - models (folder): empty
 
 **3. The cloud-based server URL:**
-https://comp3810sef-group5.azurewebsites.net/
+comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
 
 **4. Operation guides**
  - Use of Login/Logout pages: Go to /signup to create user. Login at /login. Click Logout.
@@ -27,4 +27,5 @@ https://comp3810sef-group5.azurewebsites.net/
    GET /api/todos → curl http://localhost:8099/api/todos
    POST /api/todos → curl -X POST -H "Content-Type: application/json" -d '{"title":"Test"}' ...
    PUT /api/todos/:id → curl -X PUT ...
+
    DELETE /api/todos/:id → curl -X DELETE ...
