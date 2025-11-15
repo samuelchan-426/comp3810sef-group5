@@ -143,3 +143,56 @@ a:hover {
   color: #7f8c8d;
   font-style: italic;
 }
+
+/* Preview Box */
+.preview-box {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  border-left: 4px solid #3498db;
+}
+
+/* Confirm Buttons */
+.confirm-btn {
+  background: #27ae60;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.confirm-btn:hover {
+  background: #219653;
+}
+.cancel-btn {
+  background: #95a5a6;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+}
+.cancel-btn:hover {
+  background: #7f8c8d;
+}
+
+/* Delete Modal */
+.delete-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 400px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
