@@ -116,7 +116,14 @@ app.get('/todos/edit/:id', requireAuth, async (req, res) => {
 app.post('/todos/update/:id', requireAuth, async (req, res) => {
   await db.collection(TODOS_COLL).updateOne(
     { _id: new ObjectId(req.params.id) },
-    { $set: { title: req.body.title, description: req.body.description } }
+    { 
+      $set: { 
+        title: req.body.title, 
+        description: req.body.description,
+        updatedAt: new Date(),
+        updatedBy: req.session.username
+      } 
+    }
   );
   res.redirect('/todos?msg=updated');
 });
@@ -157,4 +164,5 @@ app.delete('/api/todos/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
 
