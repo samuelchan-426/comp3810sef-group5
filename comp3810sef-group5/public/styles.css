@@ -100,3 +100,37 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* Top-right logout */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.logout-btn {
+  background: #e74c3c;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+.logout-btn:hover {
+  background: #c0392b;
+}
+
+/* Longer line */
+.divider-long {
+  height: 3px;
+  background: #3498db;
+  width: 300px;
+  margin: 20px auto;
+  border-radius: 2px;
+}
+
+/* Owner text */
+.owner {
+  color: #7f8c8d;
+  font-style: italic;
+}
