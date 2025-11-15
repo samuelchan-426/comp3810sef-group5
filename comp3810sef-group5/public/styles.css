@@ -101,14 +101,22 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Top-right logout */
+/* Center title + top-right logout */
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  position: relative;
   margin-bottom: 10px;
 }
+.header .title {
+  margin: 0;
+}
 .logout-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   background: #e74c3c;
   color: white;
   padding: 8px 16px;
@@ -120,11 +128,12 @@ a:hover {
   background: #c0392b;
 }
 
-/* Longer line */
+/* Full-width separator line */
 .divider-long {
   height: 3px;
   background: #3498db;
-  width: 300px;
+  width: 100%;
+  max-width: 500px;
   margin: 20px auto;
   border-radius: 2px;
 }
