@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirm Create</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">TODO LIST</h1>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+    <div class="divider-long"></div>
+    <h2>Confirm New Todo</h2>
+    <div class="preview-box">
+      <p><strong>Title:</strong> <%= title %></p>
+      <p><strong>Description:</strong> <%= description || '(none)' %></p>
+    </div>
+    <form action="/todos/confirm" method="POST">
+      <input type="hidden" name="title" value="<%= title %>">
+      <input type="hidden" name="description" value="<%= description %>">
+      <button class="confirm-btn">Confirm Create</button>
+      <a href="/todos" class="cancel-btn">Cancel</a>
+    </form>
+  </div>
+</body>
+</html>

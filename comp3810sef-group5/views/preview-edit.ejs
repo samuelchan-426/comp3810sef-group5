@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirm Edit</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">TODO LIST</h1>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+    <div class="divider-long"></div>
+    <h2>Confirm Edit</h2>
+    <div class="preview-box">
+      <p><strong>New Title:</strong> <%= todo.title %></p>
+      <p><strong>New Description:</strong> <%= todo.description || '(none)' %></p>
+    </div>
+    <form action="/todos/update-confirm/<%= todo._id %>" method="POST">
+      <input type="hidden" name="title" value="<%= todo.title %>">
+      <input type="hidden" name="description" value="<%= todo.description %>">
+      <button class="confirm-btn">Confirm Update</button>
+      <a href="/todos" class="cancel-btn">Cancel</a>
+    </form>
+  </div>
+</body>
+</html>
