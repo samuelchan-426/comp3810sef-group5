@@ -97,7 +97,13 @@ app.get('/todos', requireAuth, async (req, res) => {
 });
 
 app.post('/todos', requireAuth, async (req, res) => {
-  await db.collection(TODOS_COLL).insertOne({ title: req.body.title, description: req.body.description });
+  await db.collection(TODOS_COLL).insertOne({
+    title: req.body.title,
+    description: req.body.description,
+    userId: req.session.userId,
+    username: req.session.username,
+    createdAt: new Date() // ← NEW: HKT time
+  });
   res.redirect('/todos?msg=created');
 });
 
@@ -151,3 +157,4 @@ app.delete('/api/todos/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
