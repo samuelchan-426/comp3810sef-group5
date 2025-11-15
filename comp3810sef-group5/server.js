@@ -179,10 +179,25 @@ app.post('/todos/confirm', requireAuth, async (req, res) => {
 });
 
 // === PREVIEW: EDIT TODO ===
+app.post('/todos/edit-preview/:id', requireAuth, async (req, res) => {
+  const { title, description } = req.body;
+  const todo = await db.collection(TODOS_COLL).findOne({ _id: new ObjectId(req.params.id) });
+  if (!todo) return res.redirect('/todos');
+  res.render('preview-edit', { 
+    title, 
+    description, 
+    id: req.params.id 
+  });
+});
+
 app.get('/todos/edit-preview/:id', requireAuth, async (req, res) => {
   const todo = await db.collection(TODOS_COLL).findOne({ _id: new ObjectId(req.params.id) });
   if (!todo) return res.redirect('/todos');
-  res.render('preview-edit', { todo });
+  res.render('preview-edit', { 
+    title: todo.title, 
+    description: todo.description || '', 
+    id: req.params.id 
+  });
 });
 
 app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
@@ -203,6 +218,3 @@ app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
-
-
