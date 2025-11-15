@@ -55,22 +55,28 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 ### RESTful APIs – **TODOS** (no authentication)
 | Method | URI | cURL Command |
 |--------|-----|--------------|
-| **GET** | `/api/todos` | `curl http://localhost:8099/api/todos` |
-| **GET** | `/api/todos?search=test` | `curl "http://localhost:8099/api/todos?search=test"` |
-| **POST** | `/api/todos` | ```bash<br>curl -X POST -H "Content-Type: application/json" \<br>     -d '{"title":"Buy milk","description":"2L"}' \<br>     http://localhost:8099/api/todos<br>``` |
-| **PUT** | `/api/todos/:id` | ```bash<br>curl -X PUT -H "Content-Type: application/json" \<br>     -d '{"title":"Buy almond milk"}' \<br>     http://localhost:8099/api/todos/66f1a2b3c4d5e6f7g8h9i0j1<br>``` |
-| **DELETE** | `/api/todos/:id` | `curl -X DELETE http://localhost:8099/api/todos/66f1a2b3c4d5e6f7g8h9i0j1` |
+| **GET** | `/api/todos`  | curl http://localhost:8099/api/todos |
+| **POST**| `/api/todos`  | curl -X POST http://localhost:8099/api/todos \    |
+                          |      -H "Content-Type: application/json" \        |
+                          |      -d '{"title":"Buy milk","description":"2L"}' |
+| **PUT** | `/api/todos/:id` | curl -X PUT http://localhost:8099/api/todos/66f1a2b3c4d5e6f7g8h9i0j \ |
+                             |      -H "Content-Type: application/json" \                            |
+                             |      -d '{"title":"Buy almond milk"}'                                 |
+| **DELETE** | `/api/todos/:id` | curl -X DELETE http://localhost:8099/api/todos/66f1a2b3c4d5e6f7g8h9i0j1 |
 
 ---
 
 ### RESTful APIs – **USERS** (no authentication)
 | Method | URI | cURL Command |
 |--------|-----|--------------|
-| **GET** | `/api/users` | `curl http://localhost:8099/api/users` |
-| **GET** | `/api/users?search=ali` | `curl "http://localhost:8099/api/users?search=ali"` |
-| **POST** | `/api/users` | ```bash<br>curl -X POST -H "Content-Type: application/json" \<br>     -d '{"username":"bob","password":"secret"}' \<br>     http://localhost:8099/api/users<br>``` |
-| **PUT** | `/api/users/:id` | ```bash<br>curl -X PUT -H "Content-Type: application/json" \<br>     -d '{"password":"newpass"}' \<br>     http://localhost:8099/api/users/66f1a2b3c4d5e6f7g8h9i0j1<br>``` |
-| **DELETE** | `/api/users/:id` | `curl -X DELETE http://localhost:8099/api/users/66f1a2b3c4d5e6f7g8h9i0j1` |
+| **GET** | `/api/users` | curl http://localhost:8099/api/users |
+| **POST**| `/api/users` | curl -X POST http://localhost:8099/api/users \  |
+                         |      -H "Content-Type: application/json" \      |
+                         |      -d '{"username":"bob","password":"secret"}'|
+| **PUT** | `/api/users/:id` | curl -X PUT http://localhost:8099/api/users/66f1a2b3c4d5e6f7g8h9i0j1 \  |
+                             |       -H "Content-Type: application/json" \                             |
+                             |       -d '{"password":"newpass"}'                                       |
+| **DELETE** | `/api/users/:id` | curl -X DELETE http://localhost:8099/api/users/66f1a2b3c4d5e6f7g8h9i0j1 |
 
 ---
 
@@ -84,5 +90,6 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 - **Delete Confirmation**: Uses **browser `confirm()` dialog**.  
 - **Port**: `8099` (local), `process.env.PORT` on Azure.  
 - **Deployment**: GitHub → Azure App Service. `MONGO_URI` set in **App Settings**.
+- **REST APIs**: All 8 endpoints (4 for `todos`, 4 for `users`) fully implemented and tested on Ubuntu VM.
 
 ---
