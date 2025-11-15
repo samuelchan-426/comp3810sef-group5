@@ -7,10 +7,13 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="title">TODO LIST</h1>
-    <div class="divider"></div>
+    <div class="header">
+      <h1 class="title">TODO LIST</h1>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+    <div class="divider-long"></div>
 
-    <p class="welcome">Welcome, <strong><%= username %></strong>! <a href="/logout">Logout</a></p>
+    <p class="welcome">Welcome, <strong><%= username %></strong>!</p>
 
     <% if (msg === 'created') { %>
       <p class="success">Todo created successfully!</p>
@@ -48,6 +51,15 @@
           <li>
             <strong><%= todo.title %></strong><br>
             <%= todo.description || '(No description)' %>
+            <br><small class="owner">
+                  Added by: <strong><%= todo.username %></strong> on 
+                  <%= new Date(todo.createdAt).toLocaleDateString('en-GB', { 
+                    day: 'numeric', month: 'short', year: 'numeric' 
+                  }) %> at 
+                  <%= new Date(todo.createdAt).toLocaleTimeString('en-US', { 
+                    hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Hong_Kong' 
+                  }) %> HKT
+                </small>
             <div class="actions">
               <a href="/todos/edit/<%= todo._id %>">Edit</a>
               <form action="/todos/delete/<%= todo._id %>" method="POST" style="display:inline;margin-left:10px;">
