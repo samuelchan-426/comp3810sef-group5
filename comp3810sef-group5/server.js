@@ -161,8 +161,48 @@ app.delete('/api/todos/:id', async (req, res) => {
   res.json({ success: true });
 });
 
+// === PREVIEW: CREATE TODO ===
+app.get('/todos/preview', requireAuth, (req, res) => {
+  const { title, description } = req.query;
+  res.render('preview-create', { title, description });
+});
+
+app.post('/todos/confirm', requireAuth, async (req, res) => {
+  await db.collection(TODOS_COLL).insertOne({
+    title: req.body.title,
+    description: req.body.description,
+    userId: req.session.userId,
+    username: req.session.username,
+    createdAt: new Date()
+  });
+  res.redirect('/todos?msg=created');
+});
+
+// === PREVIEW: EDIT TODO ===
+app.get('/todos/edit-preview/:id', requireAuth, async (req, res) => {
+  const todo = await db.collection(TODOS_COLL).findOne({ _id: new ObjectId(req.params.id) });
+  if (!todo) return res.redirect('/todos');
+  res.render('preview-edit', { todo });
+});
+
+app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
+  await db.collection(TODOS_COLL).updateOne(
+    { _id: new ObjectId(req.params.id) },
+    { 
+      $set: { 
+        title: req.body.title, 
+        description: req.body.description,
+        updatedAt: new Date(),
+        updatedBy: req.session.username
+      } 
+    }
+  );
+  res.redirect('/todos?msg=updated');
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
 
 
