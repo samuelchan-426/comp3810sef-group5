@@ -215,6 +215,89 @@ app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
   res.redirect('/todos?msg=updated');
 });
 
+// ========================================
+// RESTful APIs – USERS (NO AUTHENTICATION)
+// ========================================
+
+// GET /api/users - List all users (hide password)
+app.get('/api/users', async (req, res) => {
+  try {
+    const search = req.query.search || '';
+    const query = search ? { username: { $regex: search, $options: 'i' } } : {};
+    const users = await db.collection(USERS_COLL)
+      .find(query, { projection: { password: 0 } })
+      .toArray();
+
+    // Convert ObjectId to string
+    const safeUsers = users.map(user => ({
+      id: user._id.toString(),
+      username: user.username
+    }));
+
+    res.json(safeUsers);
+  } catch (err) {
+    console.error('GET /api/users error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// POST /api/users - Create new user
+app.post('/api/users', async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password required' });
+  }
+  try {
+    const existing = await db.collection(USERS_COLL).findOne({ username });
+    if (existing) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+    const hashed = await bcrypt.hash(password, 10);
+    const result = await db.collection(USERS_COLL).insertOne({ username, password: hashed });
+    res.json({ id: result.insertedId.toString(), username });
+  } catch (err) {
+    console.error('POST /api/users error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PUT /api/users/:id - Update password
+app.put('/api/users/:id', async (req, res) => {
+  const { password } = req.body;
+  if (!password) {
+    return res.status(400).json({ error: 'Password required' });
+  }
+  try {
+    const hashed = await bcrypt.hash(password, 10);
+    const result = await db.collection(USERS_COLL).updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { password: hashed } }
+    );
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ success: true });
+  } catch (err) {
+    console.error('PUT /api/users error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// DELETE /api/users/:id - Delete user
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const result = await db.collection(USERS_COLL).deleteOne({ _id: new ObjectId(req.params.id) });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ success: true });
+  } catch (err) {
+    console.error('DELETE /api/users error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
