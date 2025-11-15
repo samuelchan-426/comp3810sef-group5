@@ -12,14 +12,14 @@
       <a href="/logout" class="logout-btn">Logout</a>
     </div>
     <div class="divider-long"></div>
-    <h2>Confirm Edit</h2>
+    <h2>Preview Changes</h2>
     <div class="preview-box">
-      <p><strong>New Title:</strong> <%= todo.title %></p>
-      <p><strong>New Description:</strong> <%= todo.description || '(none)' %></p>
+      <p><strong>New Title:</strong> <%= title %></p>
+      <p><strong>New Description:</strong> <%= description || '(none)' %></p>
     </div>
-    <form action="/todos/update-confirm/<%= todo._id %>" method="POST">
-      <input type="hidden" name="title" value="<%= todo.title %>">
-      <input type="hidden" name="description" value="<%= todo.description %>">
+    <form action="/todos/update-confirm/<%= id %>" method="POST">
+      <input type="hidden" name="title" value="<%= title %>">
+      <input type="hidden" name="description" value="<%= description %>">
       <button class="confirm-btn">Confirm Update</button>
       <a href="/todos" class="cancel-btn">Cancel</a>
     </form>
