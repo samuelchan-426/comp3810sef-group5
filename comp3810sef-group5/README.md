@@ -59,10 +59,10 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 | **POST**| `/api/todos`  | curl -X POST http://localhost:8099/api/todos \    |
 |         |               |      -H "Content-Type: application/json" \        |
 |         |               |      -d '{"title":"Buy milk","description":"2L"}' |
-| **PUT** | `/api/todos/:id` | curl -X PUT http://localhost:8099/api/todos/id(input your id generate from above command) \       |
-|         |                  |      -H "Content-Type: application/json" \                                                        |
-|         |                  |      -d '{"title":"Buy almond milk"}'                                                             |
-| **DELETE** | `/api/todos/:id` | curl -X DELETE http://localhost:8099/api/todos/id(input your id generate from above command)   |
+| **PUT** | `/api/todos/:id` | curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) \       |
+|         |                  |      -H "Content-Type: application/json" \                                                         |
+|         |                  |      -d '{"title":"Buy almond milk"}'                                                              |
+| **DELETE** | `/api/todos/:id` | curl -X DELETE http://localhost:8099/api/todos/id (input your id generate from above command)   |
 
 ---
 
@@ -73,10 +73,10 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 | **POST**| `/api/users` | curl -X POST http://localhost:8099/api/users \  |
 |         |              |      -H "Content-Type: application/json" \      |
 |         |              |      -d '{"username":"bob","password":"secret"}'|
-| **PUT** | `/api/users/:id` | curl -X PUT http://localhost:8099/api/users/id(input your id generate from above command) \     |
-|         |                  |      -H "Content-Type: application/json" \                                                      |
-|         |                  |      -d '{"password":"newpass"}'                                                                |
-| **DELETE** | `/api/users/:id` | curl -X DELETE http://localhost:8099/api/users/id(input your id generate from above command) |
+| **PUT** | `/api/users/:id` | curl -X PUT http://localhost:8099/api/users/id (input your id generate from above command) \     |
+|         |                  |      -H "Content-Type: application/json" \                                                       |
+|         |                  |      -d '{"password":"newpass"}'                                                                 |
+| **DELETE** | `/api/users/:id` | curl -X DELETE http://localhost:8099/api/users/id (input your id generate from above command) |
 
 ---
 
@@ -93,3 +93,4 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 - **REST APIs**: All 8 endpoints (4 for `todos`, 4 for `users`) fully implemented and tested on Ubuntu VM.
 
 ---
+
