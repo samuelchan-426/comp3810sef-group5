@@ -87,16 +87,25 @@
             </small>
             <div class="actions">
               <a href="/todos/edit/<%= todo._id %>">Edit</a>
-              <form action="/todos/delete/<%= todo._id %>" method="POST" style="display:inline;margin-left:10px;">
-                <button class="delete-btn" onclick="openDeleteModal('<%= todo._id %>', '<%= todo.title %>')">
-                  Delete
-                </button>
-              </form>
+              <button class="delete-btn" onclick="confirmDelete('<%= todo._id %>', '<%= todo.title %>')">
+                Delete
+              </button>
             </div>
           </li>
         <% }) %>
       </ul>
     <% } %>
   </div>
+  <script>
+  function confirmDelete(id, title) {
+    if (confirm(`Are you sure you want to delete "${title}"?`)) {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = `/todos/delete/${id}`;
+      document.body.appendChild(form);
+      form.submit();
+    }
+  }
+  </script>
 </body>
 </html>
