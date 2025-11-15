@@ -7,6 +7,28 @@
 </head>
 <body>
   <div class="container">
+    <!-- Delete Confirm Modal -->
+    <div id="deleteModal" class="delete-modal">
+      <div class="modal-content">
+        <h3>Delete Todo?</h3>
+        <p>Are you sure you want to delete "<span id="deleteTitle"></span>"?</p>
+        <form id="deleteForm" action="" method="POST">
+          <button type="submit" class="confirm-btn">Yes, Delete</button>
+          <button type="button" onclick="closeModal()" class="cancel-btn">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+    function openDeleteModal(id, title) {
+      document.getElementById('deleteTitle').textContent = title;
+      document.getElementById('deleteForm').action = '/todos/delete/' + id;
+      document.getElementById('deleteModal').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('deleteModal').style.display = 'none';
+    }
+    </script>
     <div class="header">
       <h1 class="title">TODO LIST</h1>
       <a href="/logout" class="logout-btn">Logout</a>
@@ -24,10 +46,10 @@
     <% } %>
 
     <h2>Create New Todo</h2>
-    <form action="/todos" method="POST">
+    <form action="/todos/preview" method="GET">
       <input type="text" name="title" placeholder="Title" required>
       <input type="text" name="description" placeholder="Description">
-      <button>Add Todo</button>
+      <button type="submit">Preview & Confirm</button>
     </form>
 
     <h2>Search Todos</h2>
@@ -66,7 +88,9 @@
             <div class="actions">
               <a href="/todos/edit/<%= todo._id %>">Edit</a>
               <form action="/todos/delete/<%= todo._id %>" method="POST" style="display:inline;margin-left:10px;">
-                <button class="delete-btn">Delete</button>
+                <button class="delete-btn" onclick="openDeleteModal('<%= todo._id %>', '<%= todo.title %>')">
+                  Delete
+                </button>
               </form>
             </div>
           </li>
