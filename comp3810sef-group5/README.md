@@ -55,14 +55,14 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 ### RESTful APIs – **TODOS** (no authentication)
 | Method | URI | cURL Command |
 |--------|-----|--------------|
-| **GET** | `/api/todos`  | curl http://localhost:8099/api/todos |
+| **GET** | `/api/todos`  | curl http://localhost:8099/api/todos              |
 | **POST**| `/api/todos`  | curl -X POST http://localhost:8099/api/todos \    |
-                          |      -H "Content-Type: application/json" \        |
-                          |      -d '{"title":"Buy milk","description":"2L"}' |
-| **PUT** | `/api/todos/:id` | curl -X PUT http://localhost:8099/api/todos/66f1a2b3c4d5e6f7g8h9i0j \ |
-                             |      -H "Content-Type: application/json" \                            |
-                             |      -d '{"title":"Buy almond milk"}'                                 |
-| **DELETE** | `/api/todos/:id` | curl -X DELETE http://localhost:8099/api/todos/66f1a2b3c4d5e6f7g8h9i0j1 |
+|         |               |      -H "Content-Type: application/json" \        |
+|         |               |      -d '{"title":"Buy milk","description":"2L"}' |
+| **PUT** | `/api/todos/:id` | curl -X PUT http://localhost:8099/api/todos/id(input your id generate from above command) \       |
+|         |                  |      -H "Content-Type: application/json" \                                                        |
+|         |                  |      -d '{"title":"Buy almond milk"}'                                                             |
+| **DELETE** | `/api/todos/:id` | curl -X DELETE http://localhost:8099/api/todos/id(input your id generate from above command)   |
 
 ---
 
@@ -71,12 +71,12 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 |--------|-----|--------------|
 | **GET** | `/api/users` | curl http://localhost:8099/api/users |
 | **POST**| `/api/users` | curl -X POST http://localhost:8099/api/users \  |
-                         |      -H "Content-Type: application/json" \      |
-                         |      -d '{"username":"bob","password":"secret"}'|
-| **PUT** | `/api/users/:id` | curl -X PUT http://localhost:8099/api/users/66f1a2b3c4d5e6f7g8h9i0j1 \  |
-                             |       -H "Content-Type: application/json" \                             |
-                             |       -d '{"password":"newpass"}'                                       |
-| **DELETE** | `/api/users/:id` | curl -X DELETE http://localhost:8099/api/users/66f1a2b3c4d5e6f7g8h9i0j1 |
+|         |              |      -H "Content-Type: application/json" \      |
+|         |              |      -d '{"username":"bob","password":"secret"}'|
+| **PUT** | `/api/users/:id` | curl -X PUT http://localhost:8099/api/users/id(input your id generate from above command) \     |
+|         |                  |      -H "Content-Type: application/json" \                                                      |
+|         |                  |      -d '{"password":"newpass"}'                                                                |
+| **DELETE** | `/api/users/:id` | curl -X DELETE http://localhost:8099/api/users/id(input your id generate from above command) |
 
 ---
 
