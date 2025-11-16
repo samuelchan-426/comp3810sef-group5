@@ -124,14 +124,26 @@
                   } else {
                     countdownText = 'Due soon';
                   }
+
+                  const dueTimeStr = due.toLocaleTimeString('en-GB', { 
+                    timeZone: 'Asia/Hong_Kong', 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    hour12: true 
+                  });
                 %>
                 <br><small class="due-date">
-                  Due: <%= due.toLocaleString('en-GB', { 
+                  Due: <%= due.toLocaleDateString('en-GB', { 
                     timeZone: 'Asia/Hong_Kong', 
-                    year: 'numeric', month: 'short', day: 'numeric', 
-                    hour: '2-digit', minute: '2-digit', hour12: true 
-                  }) %> HKT
-                  — <a href="#" class="countdown-link" onclick="alert('Countdown: <%= countdownText %>')"><%= countdownText %></a>
+                    day: 'numeric', month: 'short', year: 'numeric' 
+                  }) %> 
+                  <% if (dueTimeStr !== '12:00 AM') { %>
+                    at <%= dueTimeStr %>
+                  <% } %>
+                  — <%= countdownText %>
+                  <% if (dueTimeStr !== '12:00 AM') { %>
+                    and due at <%= dueTimeStr %>
+                  <% } %>
                 </small>
               <% } %>
             </small>
