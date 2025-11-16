@@ -149,40 +149,11 @@
               <% if (todo.dueDate) { %>
                 <% 
                   const due = new Date(todo.dueDate);
-                  const now = new Date();
-                  const diffMs = due - now;
-                  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-                  const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                  let countdownText = '';
-                  if (diffMs < 0) {
-                    countdownText = 'Overdue';
-                  } else if (diffDays > 0) {
-                    countdownText = `${diffDays} day${diffDays > 1 ? 's' : ''} left`;
-                  } else if (diffHours > 0) {
-                    countdownText = `${diffHours} hour${diffHours > 1 ? 's' : ''} left`;
-                  } else {
-                    countdownText = 'Due soon';
-                  }
-
-                  const dueTimeStr = due.toLocaleTimeString('en-GB', { 
-                    timeZone: 'Asia/Hong_Kong', 
-                    hour: '2-digit', 
-                    minute: '2-digit', 
-                    hour12: true 
-                  });
+                  const hktDate = due.toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' });
+                  const hktTime = due.toLocaleTimeString('en-GB', { timeZone: 'Asia/Hong_Kong', hour: '2-digit', minute: '2-digit', hour12: true });
                 %>
                 <br><small class="due-date">
-                  Due: <%= due.toLocaleDateString('en-GB', { 
-                    timeZone: 'Asia/Hong_Kong', 
-                    day: 'numeric', month: 'short', year: 'numeric' 
-                  }) %> 
-                  <% if (dueTimeStr !== '12:00 AM') { %>
-                    at <%= dueTimeStr %>
-                  <% } %>
-                  — <%= countdownText %>
-                  <% if (dueTimeStr !== '12:00 AM') { %>
-                    and due at <%= dueTimeStr %>
-                  <% } %>
+                  Due: <%= hktDate %> at <%= hktTime %> HKT
                 </small>
               <% } %>
             </small>
