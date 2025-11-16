@@ -1,7 +1,7 @@
 {
   "name": "comp3810sef-group5",
   "version": "1.0.0",
-  "description": "Simple Todo List App for COMP S3810SEF",
+  "description": "Simple Todo List App for COMP 3810SEF",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -15,4 +15,5 @@
   },
   "author": "Tsui Ching Kit, Chan Pak Hei, Qiu Yiu Fung",
   "license": "ISC"
+
 }
