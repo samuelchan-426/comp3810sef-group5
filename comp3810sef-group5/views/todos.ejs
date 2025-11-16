@@ -6,6 +6,20 @@
   <link rel="stylesheet" href="/styles.css">
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Force English
+      document.querySelectorAll('input[type="date"]').forEach(input => {
+        input.lang = 'en';
+        input.setAttribute('lang', 'en');
+      });
+      // Disable past dates
+      const today = new Date().toISOString().split('T')[0];
+      document.querySelectorAll('input[type="date"]').forEach(input => {
+        input.min = today;
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
       // Force English calendar
       const inputs = document.querySelectorAll('input[type="date"], input[type="time"]');
       inputs.forEach(input => {
