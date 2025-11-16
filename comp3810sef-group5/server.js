@@ -191,10 +191,15 @@ app.get('/todos/preview', requireAuth, (req, res) => {
 app.post('/todos/confirm', requireAuth, async (req, res) => {
   const { title, description, dueDate, dueTime } = req.body;
   let fullDueDate = null;
-  if (dueDate) {
-    const dateStr = dueTime ? `${dueDate}T${dueTime}:00` : `${dueDate}T00:00:00`;
-    fullDueDate = new Date(dateStr); // Local → will be converted to UTC
+
+  // Only set if BOTH date AND time are provided OR only date
+  if (dueDate && dueDate !== '' && dueDate !== 'null') {
+    const dateStr = dueTime && dueTime !== '' && dueTime !== 'null' 
+      ? `${dueDate}T${dueTime}:00` 
+      : `${dueDate}T00:00:00`;
+    fullDueDate = new Date(dateStr);
   }
+
   await db.collection(TODOS_COLL).insertOne({
     title,
     description: description || null,
@@ -233,10 +238,14 @@ app.get('/todos/edit-preview/:id', requireAuth, async (req, res) => {
 app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
   const { title, description, dueDate, dueTime } = req.body;
   let fullDueDate = null;
-  if (dueDate) {
-    const dateStr = dueTime ? `${dueDate}T${dueTime}:00` : `${dueDate}T00:00:00`;
+
+  if (dueDate && dueDate !== '' && dueDate !== 'null') {
+    const dateStr = dueTime && dueTime !== '' && dueTime !== 'null' 
+      ? `${dueDate}T${dueTime}:00` 
+      : `${dueDate}T00:00:00`;
     fullDueDate = new Date(dateStr);
   }
+
   await db.collection(TODOS_COLL).updateOne(
     { _id: new ObjectId(req.params.id) },
     { 
