@@ -381,6 +381,8 @@ input:focus {
 .auth-link .btn-primary {
   display: inline-block;
   text-decoration: none;
+  padding: 12px 24px;
+  font-weight: 600;
 }
 
 /* ========================================
