@@ -196,3 +196,25 @@ a:hover {
   width: 400px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
+
+.datetime-picker {
+  margin: 15px 0;
+}
+.datetime-picker label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #34495e;
+}
+.datetime-picker input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+.due-date {
+  color: #e67e22;
+  font-style: italic;
+  margin-top: 5px;
+}
