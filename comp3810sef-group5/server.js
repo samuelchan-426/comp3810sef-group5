@@ -200,11 +200,10 @@ app.post('/todos/confirm', requireAuth, async (req, res) => {
 
 // NEW: Save in UTC
 let fullDueDate = null;
-if (dueDate && dueDate !== '') {
-  const [year, month, day] = dueDate.split('-').map(Number);
-  const hours = dueTime ? dueTime.split(':')[0] : 0;
-  const minutes = dueTime ? dueTime.split(':')[1] : 0;
-  fullDueDate = new Date(Date.UTC(year, month - 1, day, hours, minutes, 0));
+if (dueDate && dueDate.trim() !== '') {
+  const [y, m, d] = dueDate.split('-');
+  const [h = 0, min = 0] = dueTime ? dueTime.split(':') : [];
+  fullDueDate = new Date(Date.UTC(y, m-1, d, h, min, 0));
 }
 
   await db.collection(TODOS_COLL).insertOne({
@@ -250,11 +249,10 @@ app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
 
 // NEW: Save in UTC
 let fullDueDate = null;
-if (dueDate && dueDate !== '') {
-  const [year, month, day] = dueDate.split('-').map(Number);
-  const hours = dueTime ? dueTime.split(':')[0] : 0;
-  const minutes = dueTime ? dueTime.split(':')[1] : 0;
-  fullDueDate = new Date(Date.UTC(year, month - 1, day, hours, minutes, 0));
+if (dueDate && dueDate.trim() !== '') {
+  const [y, m, d] = dueDate.split('-');
+  const [h = 0, min = 0] = dueTime ? dueTime.split(':') : [];
+  fullDueDate = new Date(Date.UTC(y, m-1, d, h, min, 0));
 }
 
   await db.collection(TODOS_COLL).updateOne(
@@ -269,7 +267,7 @@ if (dueDate && dueDate !== '') {
       } 
     }
   );
-  res.redirect('/todos?msg=updated');
+  res.redirect(`/todos?msg=updated&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
 });
 
 // ========================================
