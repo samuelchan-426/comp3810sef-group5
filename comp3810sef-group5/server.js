@@ -61,7 +61,7 @@ app.post('/login', async (req, res) => {
     if (user && await bcrypt.compare(password, user.password)) {
       req.session.userId = user._id.toString();
       req.session.username = username;
-      return res.redirect('/todos');
+      return res.redirect('/todos?welcome=true');
     }
     res.render('login', { error: 'Invalid username or password' });
   } catch (err) {
@@ -288,3 +288,4 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
