@@ -109,37 +109,96 @@ app.get('/todos', requireAuth, async (req, res) => {
     description,
     dueDate,
     dueTime,
-    username: req.session.username 
+    username: req.session.username,
+    totalFound: todos.length
   });
 });
 
+// Preview Create
+app.get('/todos/preview', requireAuth, (req, res) => {
+  const { title, description, dueDate, dueTime } = req.query;
+  res.render('preview-create', { 
+    title: title || '',
+    description: description || '',
+    dueDate: dueDate || '',
+    dueTime: dueTime || ''
+  });
+});
+
+// Confirm Create
+app.post('/todos/confirm', requireAuth, async (req, res) => {
+  const { title, description, dueDate, dueTime } = req.body;
+  let fullDueDate = null;
+  if (dueDate && dueDate.trim() !== '') {
+    const [y, m, d] = dueDate.split('-');
+    const [h = 0, min = 0] = dueTime ? dueTime.split(':') : [];
+    fullDueDate = new Date(Date.UTC(y, m-1, d, h, min, 0));
+  }
+
+  await db.collection(TODOS_COLL).insertOne({
+    title,
+    description: description || null,
+    dueDate: fullDueDate,
+    userId: req.session.userId,
+    username: req.session.username,
+    createdAt: new Date()
+  });
+
+  res.redirect(`/todos?msg=created&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description || '')}&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
+});
+
+// Edit Form
 app.get('/todos/edit/:id', requireAuth, async (req, res) => {
   const todo = await db.collection(TODOS_COLL).findOne({ _id: new ObjectId(req.params.id) });
   if (!todo) return res.redirect('/todos');
   res.render('edit', { todo });
 });
 
-app.post('/todos/update/:id', requireAuth, async (req, res) => {
+// Preview Edit
+app.post('/todos/edit-preview/:id', requireAuth, async (req, res) => {
+  const { title, description, dueDate, dueTime } = req.body;
+  res.render('preview-edit', { 
+    title: title || '',
+    description: description || '',
+    dueDate: dueDate || '',
+    dueTime: dueTime || '',
+    id: req.params.id 
+  });
+});
+
+// Confirm Update
+app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
+  const { title, description, dueDate, dueTime } = req.body;
+  let fullDueDate = null;
+  if (dueDate && dueDate.trim() !== '') {
+    const [y, m, d] = dueDate.split('-');
+    const [h = 0, min = 0] = dueTime ? dueTime.split(':') : [];
+    fullDueDate = new Date(Date.UTC(y, m-1, d, h, min, 0));
+  }
+
   await db.collection(TODOS_COLL).updateOne(
     { _id: new ObjectId(req.params.id) },
     { 
       $set: { 
-        title: req.body.title, 
-        description: req.body.description,
+        title, 
+        description: description || null,
+        dueDate: fullDueDate,
         updatedAt: new Date(),
         updatedBy: req.session.username
       } 
     }
   );
-  res.redirect('/todos?msg=updated');
+
+  res.redirect(`/todos?msg=updated&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description || '')}&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
 });
 
+// Delete
 app.post('/todos/delete/:id', requireAuth, async (req, res) => {
   await db.collection(TODOS_COLL).deleteOne({ _id: new ObjectId(req.params.id) });
   res.redirect('/todos?msg=deleted');
 });
 
-// REST APIs
+// REST APIs (unchanged)
 app.get('/api/todos', async (req, res) => {
   const search = req.query.search || '';
   const query = search ? { title: { $regex: search, $options: 'i' } } : {};
@@ -167,100 +226,7 @@ app.delete('/api/todos/:id', async (req, res) => {
   res.json({ success: true });
 });
 
-// === PREVIEW: CREATE TODO ===
-app.get('/todos/preview', requireAuth, (req, res) => {
-  const { title, description, dueDate, dueTime } = req.query;
-  res.render('preview-create', { 
-    title, 
-    description: description || '(none)',
-    dueDate: dueDate || '',
-    dueTime: dueTime || ''
-  });
-});
-
-app.post('/todos/confirm', requireAuth, async (req, res) => {
-  const { title, description, dueDate, dueTime } = req.body;
-// OLD:
-// const dateStr = dueTime ? `${dueDate}T${dueTime}:00` : `${dueDate}T00:00:00`;
-// fullDueDate = new Date(dateStr);
-
-// NEW: Save in UTC
-let fullDueDate = null;
-if (dueDate && dueDate.trim() !== '') {
-  const [y, m, d] = dueDate.split('-');
-  const [h = 0, min = 0] = dueTime ? dueTime.split(':') : [];
-  fullDueDate = new Date(Date.UTC(y, m-1, d, h, min, 0));
-}
-
-  await db.collection(TODOS_COLL).insertOne({
-    title,
-    description: description || null,
-    dueDate: fullDueDate,
-    userId: req.session.userId,
-    username: req.session.username,
-    createdAt: new Date()
-  });
-  res.redirect(`/todos?msg=created&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description || '')}&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
-});
-
-// === PREVIEW: EDIT TODO ===
-app.post('/todos/edit-preview/:id', requireAuth, async (req, res) => {
-  const { title, description, dueDate, dueTime } = req.body;
-  const todo = await db.collection(TODOS_COLL).findOne({ _id: new ObjectId(req.params.id) });
-  if (!todo) return res.redirect('/todos');
-  res.render('preview-edit', { 
-    title, 
-    description: description || '(none)',
-    dueDate: dueDate || '',
-    dueTime: dueTime || '',
-    id: req.params.id 
-  });
-});
-
-app.get('/todos/edit-preview/:id', requireAuth, async (req, res) => {
-  const todo = await db.collection(TODOS_COLL).findOne({ _id: new ObjectId(req.params.id) });
-  if (!todo) return res.redirect('/todos');
-  res.render('preview-edit', { 
-    title: todo.title, 
-    description: todo.description || '', 
-    id: req.params.id 
-  });
-});
-
-app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
-  const { title, description, dueDate, dueTime } = req.body;
-// OLD:
-// const dateStr = dueTime ? `${dueDate}T${dueTime}:00` : `${dueDate}T00:00:00`;
-// fullDueDate = new Date(dateStr);
-
-// NEW: Save in UTC
-let fullDueDate = null;
-if (dueDate && dueDate.trim() !== '') {
-  const [y, m, d] = dueDate.split('-');
-  const [h = 0, min = 0] = dueTime ? dueTime.split(':') : [];
-  fullDueDate = new Date(Date.UTC(y, m-1, d, h, min, 0));
-}
-
-  await db.collection(TODOS_COLL).updateOne(
-    { _id: new ObjectId(req.params.id) },
-    { 
-      $set: { 
-        title, 
-        description: description || null,
-        dueDate: fullDueDate,
-        updatedAt: new Date(),
-        updatedBy: req.session.username
-      } 
-    }
-  );
-  res.redirect(`/todos?msg=updated&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description || '')}&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
-});
-
-// ========================================
-// RESTful APIs – USERS (NO AUTHENTICATION)
-// ========================================
-
-// GET /api/users - List all users (hide password)
+// User APIs (unchanged)
 app.get('/api/users', async (req, res) => {
   try {
     const search = req.query.search || '';
@@ -268,72 +234,52 @@ app.get('/api/users', async (req, res) => {
     const users = await db.collection(USERS_COLL)
       .find(query, { projection: { password: 0 } })
       .toArray();
-
-    // Convert ObjectId to string
     const safeUsers = users.map(user => ({
       id: user._id.toString(),
       username: user.username
     }));
-
     res.json(safeUsers);
   } catch (err) {
-    console.error('GET /api/users error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// POST /api/users - Create new user
 app.post('/api/users', async (req, res) => {
   const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password required' });
-  }
+  if (!username || !password) return res.status(400).json({ error: 'Required' });
   try {
     const existing = await db.collection(USERS_COLL).findOne({ username });
-    if (existing) {
-      return res.status(400).json({ error: 'Username already exists' });
-    }
+    if (existing) return res.status(400).json({ error: 'Exists' });
     const hashed = await bcrypt.hash(password, 10);
     const result = await db.collection(USERS_COLL).insertOne({ username, password: hashed });
     res.json({ id: result.insertedId.toString(), username });
   } catch (err) {
-    console.error('POST /api/users error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// PUT /api/users/:id - Update password
 app.put('/api/users/:id', async (req, res) => {
   const { password } = req.body;
-  if (!password) {
-    return res.status(400).json({ error: 'Password required' });
-  }
+  if (!password) return res.status(400).json({ error: 'Password required' });
   try {
     const hashed = await bcrypt.hash(password, 10);
     const result = await db.collection(USERS_COLL).updateOne(
       { _id: new ObjectId(req.params.id) },
       { $set: { password: hashed } }
     );
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+    if (result.matchedCount === 0) return res.status(404).json({ error: 'Not found' });
     res.json({ success: true });
   } catch (err) {
-    console.error('PUT /api/users error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// DELETE /api/users/:id - Delete user
 app.delete('/api/users/:id', async (req, res) => {
   try {
     const result = await db.collection(USERS_COLL).deleteOne({ _id: new ObjectId(req.params.id) });
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: 'User not found' });
-    }
+    if (result.deletedCount === 0) return res.status(404).json({ error: 'Not found' });
     res.json({ success: true });
   } catch (err) {
-    console.error('DELETE /api/users error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -341,4 +287,3 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
