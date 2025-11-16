@@ -113,17 +113,6 @@ app.get('/todos', requireAuth, async (req, res) => {
   });
 });
 
-app.post('/todos', requireAuth, async (req, res) => {
-  await db.collection(TODOS_COLL).insertOne({
-    title: req.body.title,
-    description: req.body.description,
-    userId: req.session.userId,
-    username: req.session.username,
-    createdAt: new Date() // ← NEW: HKT time
-  });
-  res.redirect('/todos?msg=created');
-});
-
 app.get('/todos/edit/:id', requireAuth, async (req, res) => {
   const todo = await db.collection(TODOS_COLL).findOne({ _id: new ObjectId(req.params.id) });
   if (!todo) return res.redirect('/todos');
@@ -352,3 +341,4 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
