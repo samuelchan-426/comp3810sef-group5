@@ -85,12 +85,28 @@ app.get('/logout', (req, res) => {
 // Todos Page
 app.get('/todos', requireAuth, async (req, res) => {
   const search = req.query.search || '';
+  const searchDate = req.query.searchDate || '';
   const msg = req.query.msg || '';
-  const query = search ? { title: { $regex: search, $options: 'i' } } : {};
-  const todos = await db.collection(TODOS_COLL).find(query).toArray();
+
+  let query = {};
+  if (search) query.title = { $regex: search, $options: 'i' };
+  if (searchDate) {
+    const start = new Date(searchDate);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(searchDate);
+    end.setHours(23, 59, 59, 999);
+    query.dueDate = { $gte: start, $lte: end };
+  }
+
+  const todos = await db.collection(TODOS_COLL)
+    .find(query)
+    .sort({ dueDate: 1 }) // Sort by time
+    .toArray();
+
   res.render('todos', {
     todos,
     search,
+    searchDate,
     msg,
     username: req.session.username
   });
@@ -168,9 +184,19 @@ app.get('/todos/preview', requireAuth, (req, res) => {
 });
 
 app.post('/todos/confirm', requireAuth, async (req, res) => {
+  const { title, description, dueDate, dueTime } = req.body;
+  let fullDueDate = null;
+  if (dueDate) {
+    fullDueDate = new Date(dueDate);
+    if (dueTime) {
+      const [hours, minutes] = dueTime.split(':');
+      fullDueDate.setHours(hours, minutes, 0);
+    }
+  }
   await db.collection(TODOS_COLL).insertOne({
-    title: req.body.title,
-    description: req.body.description,
+    title,
+    description: description || null,
+    dueDate: fullDueDate,
     userId: req.session.userId,
     username: req.session.username,
     createdAt: new Date()
@@ -201,12 +227,22 @@ app.get('/todos/edit-preview/:id', requireAuth, async (req, res) => {
 });
 
 app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
+  const { title, description, dueDate, dueTime } = req.body;
+  let fullDueDate = null;
+  if (dueDate) {
+    fullDueDate = new Date(dueDate);
+    if (dueTime) {
+      const [hours, minutes] = dueTime.split(':');
+      fullDueDate.setHours(hours, minutes, 0);
+    }
+  }
   await db.collection(TODOS_COLL).updateOne(
     { _id: new ObjectId(req.params.id) },
     { 
       $set: { 
-        title: req.body.title, 
-        description: req.body.description,
+        title, 
+        description: description || null,
+        dueDate: fullDueDate,
         updatedAt: new Date(),
         updatedBy: req.session.username
       } 
@@ -300,4 +336,3 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
