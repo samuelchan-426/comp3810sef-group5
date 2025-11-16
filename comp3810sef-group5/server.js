@@ -119,7 +119,7 @@ app.get('/todos', requireAuth, async (req, res) => {
     dueDate,
     dueTime,
     username: req.session.username,
-    totalFound: todos.length
+    totalFound: todos.length,
     welcome: req.query.welcome === 'true'
   });
 });
@@ -289,5 +289,6 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
 
 
