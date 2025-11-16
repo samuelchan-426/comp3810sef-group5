@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Todos</title>
+  <title>Todo List</title>
   <link rel="stylesheet" href="/styles.css">
   <script>
-  // Force calendar to English
-  document.addEventListener('DOMContentLoaded', () => {
-    const inputs = document.querySelectorAll('input[type="date"], input[type="time"]');
-    inputs.forEach(input => {
-      input.lang = 'en-GB';
-      input.setAttribute('lang', 'en-GB');
+    // Force ALL date/time inputs to English
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputs = document.querySelectorAll('input[type="date"], input[type="time"]');
+      inputs.forEach(input => {
+        input.lang = 'en-GB';
+        input.setAttribute('lang', 'en-GB');
+        input.style.fontFamily = 'Arial, sans-serif';
+      });
     });
-  });
-</script>
+  </script>
 </head>
 <body>
   <div class="container">
