@@ -2,17 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Edit Todo</title>
+  <title>Todo List</title>
   <link rel="stylesheet" href="/styles.css">
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const inputs = document.querySelectorAll('input[type="date"], input[type="time"]');
-    inputs.forEach(input => {
-      input.lang = 'en-GB';
-      input.setAttribute('lang', 'en-GB');
+    document.addEventListener('DOMContentLoaded', () => {
+      // Force English calendar
+      const inputs = document.querySelectorAll('input[type="date"], input[type="time"]');
+      inputs.forEach(input => {
+        input.lang = 'en-GB';
+        input.setAttribute('lang', 'en-GB');
+      });
+
+      // Disable past dates
+      const today = new Date().toISOString().split('T')[0];
+      document.querySelectorAll('input[type="date"]').forEach(dateInput => {
+        dateInput.setAttribute('min', today);
+      });
     });
-  });
-</script>
+  </script>
 </head>
 <body>
   <div class="container">
