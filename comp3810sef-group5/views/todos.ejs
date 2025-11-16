@@ -42,8 +42,8 @@
         <p>Todo created successfully!</p>
         <% if (dueDate) { %>
           <p>Due: 
-            <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong' }) %>
-            <% if (dueTime) { %> at <%= dueTime %> <% } else { %>(No specific time)<% } %>
+            <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
+            <% if (dueTime) { %> at <%= dueTime %> HKT<% } else { %> (No specific time)<% } %>
           </p>
         <% } else { %>
           <p>No due date set.</p>
@@ -52,6 +52,14 @@
     <% } else if (msg === 'updated') { %>
       <div class="success-msg">
         <p>Todo updated successfully!</p>
+        <% if (dueDate) { %>
+          <p>New due: 
+            <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
+            <% if (dueTime) { %> at <%= dueTime %> HKT<% } else { %> (No specific time)<% } %>
+          </p>
+        <% } else { %>
+          <p>Due date removed.</p>
+        <% } %>
       </div>
     <% } %>
     <!-- Delete Confirm Modal -->
