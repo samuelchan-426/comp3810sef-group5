@@ -179,8 +179,13 @@ app.delete('/api/todos/:id', async (req, res) => {
 
 // === PREVIEW: CREATE TODO ===
 app.get('/todos/preview', requireAuth, (req, res) => {
-  const { title, description } = req.query;
-  res.render('preview-create', { title, description });
+  const { title, description, dueDate, dueTime } = req.query;
+  res.render('preview-create', { 
+    title, 
+    description: description || '(none)',
+    dueDate: dueDate || '',
+    dueTime: dueTime || ''
+  });
 });
 
 app.post('/todos/confirm', requireAuth, async (req, res) => {
