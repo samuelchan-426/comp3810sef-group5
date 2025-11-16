@@ -17,6 +17,12 @@
     <form action="/todos/edit-preview/<%= todo._id %>" method="POST">
       <input type="text" name="title" value="<%= todo.title %>" placeholder="Title" required>
       <input type="text" name="description" value="<%= todo.description || '' %>" placeholder="Description">
+      <div class="datetime-picker">
+        <label>Due Date (optional):</label>
+        <input type="date" name="dueDate" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(0,10) : '' %>">
+        <label>Due Time (optional):</label>
+        <input type="time" name="dueTime" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(11,16) : '' %>">
+      </div>
       <button type="submit">Preview Changes</button>
     </form>
 
