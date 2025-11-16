@@ -92,18 +92,12 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 - **Deployment**: GitHub → Azure App Service. `MONGO_URI` set in **App Settings**.
 - **REST APIs**: All 8 endpoints (4 for `todos`, 4 for `users`) fully implemented and tested on Ubuntu VM.
 - **Optional Due Date/Time**: Use date/time picker (optional) – shown in list as "Due: [HKT date time]".
-- **Search by Date**: Use date picker – filters and sorts by time.
+- **Search by Date**: Fixed timezone bug – now returns correct todos.
 - **Due Date/Time**: Optional. No default value. Shown in English (HKT) with live countdown.
-- **Calendar**: Fully in English (`en-GB`), past dates disabled.
+- **Calendar**: English, past dates disabled.
 - **Preview**: Shows "No due time" if only date set.
 - **Search**: Exact date filter.
 - **Sorting**: Latest todos on top.
-- **Countdown**: Clickable link with live countdown.
-  
+- **Countdown**: Shown below "Added by" with time: "2 days left and due at 11:00 PM".
+
 ---
-
-
-
-
-
-
