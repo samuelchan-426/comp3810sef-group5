@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Confirm Create</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm New Todo</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -12,29 +13,33 @@
       <a href="/logout" class="logout-btn">Logout</a>
     </div>
     <div class="divider-long"></div>
+
     <h2>Confirm New Todo</h2>
     <div class="preview-box">
-      <p><strong>Title:</strong> <%= title %></p>
-      <p><strong>Description:</strong> <%= description %></p>
+      <p><strong>Title:</strong> <%= title || 'Untitled' %></p>
+      <p><strong>Description:</strong> <%= description || '(No description)' %></p>
       <% if (dueDate) { %>
         <p><strong>Due Date:</strong> 
-          <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong' }) %>
+          <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
         </p>
         <% if (dueTime) { %>
-          <p><strong>Due Time:</strong> <%= dueTime %></p>
+          <p><strong>Due Time:</strong> <%= dueTime %> HKT</p>
         <% } else { %>
-          <p><strong>Due Time:</strong> No due time</p>
+          <p><strong>Due Time:</strong> No time set</p>
         <% } %>
       <% } else { %>
         <p><strong>Due:</strong> No due date</p>
       <% } %>
     </div>
-    <form action="/todos/confirm" method="POST">
+
+    <form action="/todos/confirm" method="POST" style="display: inline;">
+      <input type="hidden" name="title" value="<%= title %>">
+      <input type="hidden" name="description" value="<%= description %>">
       <input type="hidden" name="dueDate" value="<%= dueDate %>">
       <input type="hidden" name="dueTime" value="<%= dueTime %>">
-      <button class="confirm-btn">Confirm Create</button>
-      <a href="/todos" class="cancel-btn">Cancel</a>
+      <button type="submit" class="confirm-btn">Confirm Create</button>
     </form>
+    <a href="/todos" class="cancel-btn">Cancel</a>
   </div>
 </body>
 </html>
