@@ -15,9 +15,14 @@
     <h2>Confirm New Todo</h2>
     <div class="preview-box">
       <p><strong>Title:</strong> <%= title %></p>
-      <p><strong>Description:</strong> <%= description || '(none)' %></p>
+      <p><strong>Description:</strong> <%= description %></p>
       <% if (dueDate || dueTime) { %>
-        <p><strong>Due:</strong> <%= dueDate %> <%= dueTime || '' %></p>
+        <p><strong>Due:</strong> 
+          <%= dueDate %> 
+          <% if (dueTime) { %> at <%= dueTime %> <% } %>
+        </p>
+      <% } else { %>
+        <p><strong>Due:</strong> No due date</p>
       <% } %>
     </div>
     <form action="/todos/confirm" method="POST">
