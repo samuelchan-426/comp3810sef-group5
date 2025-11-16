@@ -156,7 +156,8 @@ input:focus {
 .btn-primary,
 .btn-secondary,
 .confirm-btn,
-.cancel-btn {
+.cancel-btn,
+.logout-login-btn {
   padding: 12px 20px;
   border: none;
   border-radius: 6px;
@@ -166,16 +167,20 @@ input:focus {
   margin: 10px 5px 0 0;
   display: inline-block;
   text-decoration: none;
+  font-weight: 600;
+  text-align: center;
 }
 
 .btn-primary,
-.confirm-btn {
+.confirm-btn,
+.logout-login-btn {
   background: #3498db;
-  color: white;
+  color: white !important;
 }
 
 .btn-primary:hover,
-.confirm-btn:hover {
+.confirm-btn:hover,
+.logout-login-btn:hover {
   background: #2980b9;
 }
 
@@ -195,6 +200,11 @@ input:focus {
 
 .cancel-btn:hover {
   background: #7f8c8d;
+}
+
+.logout-login-btn {
+  padding: 12px 28px;
+  min-width: 160px;
 }
 
 /* ========================================
@@ -376,13 +386,6 @@ input:focus {
 
 .auth-link a:hover {
   text-decoration: underline;
-}
-
-.auth-link .btn-primary {
-  display: inline-block;
-  text-decoration: none;
-  padding: 12px 24px;
-  font-weight: 600;
 }
 
 /* ========================================
