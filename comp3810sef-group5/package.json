@@ -4,7 +4,8 @@
   "description": "Simple Todo List App for COMP 3810SEF",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -13,7 +14,12 @@
     "express": "^4.21.0",
     "mongodb": "^6.9.0"
   },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
   "author": "Tsui Ching Kit, Chan Pak Hei, Qiu Yiu Fung",
-  "license": "ISC"
-
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
