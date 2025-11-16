@@ -2,21 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Todo List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Todo</title>
   <link rel="stylesheet" href="/styles.css">
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Force English calendar
-      const inputs = document.querySelectorAll('input[type="date"], input[type="time"]');
-      inputs.forEach(input => {
-        input.lang = 'en-GB';
-        input.setAttribute('lang', 'en-GB');
-      });
-
-      // Disable past dates
       const today = new Date().toISOString().split('T')[0];
-      document.querySelectorAll('input[type="date"]').forEach(dateInput => {
-        dateInput.setAttribute('min', today);
+      const dateInput = document.querySelector('input[type="date"]');
+      if (dateInput) {
+        dateInput.lang = 'en-GB';
+        dateInput.min = today;
+      }
+      document.querySelectorAll('input[type="time"]').forEach(input => {
+        input.lang = 'en-GB';
       });
     });
   </script>
@@ -28,31 +26,29 @@
       <a href="/logout" class="logout-btn">Logout</a>
     </div>
     <div class="divider-long"></div>
+
     <h2>Edit Todo</h2>
-
     <form action="/todos/edit-preview/<%= todo._id %>" method="POST">
-      <label><strong>Title:</strong></label>
-      <input type="text" name="title" value="<%= todo.title %>" required style="width:100%; padding:10px; margin-bottom:10px;">
-
-      <label><strong>Description:</strong></label>
-      <input type="text" name="description" value="<%= todo.description || '' %>" style="width:100%; padding:10px; margin-bottom:10px;">
-
-      <label><strong>Due Date (optional):</strong></label>
-      <input type="date" name="dueDate" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(0,10) : '' %>" min="" style="width:100%; padding:10px; margin-bottom:10px;">
-
-      <label><strong>Due Time (optional):</strong></label>
-      <input type="time" name="dueTime" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(11,16) : '' %>" style="width:100%; padding:10px; margin-bottom:10px;">
-
-      <button type="submit" style="padding:10px 20px; background:#3498db; color:white; border:none; border-radius:6px;">Preview Changes</button>
+      <div class="form-group">
+        <label><strong>Title:</strong></label>
+        <input type="text" name="title" value="<%= todo.title %>" required>
+      </div>
+      <div class="form-group">
+        <label><strong>Description:</strong></label>
+        <input type="text" name="description" value="<%= todo.description || '' %>">
+      </div>
+      <div class="form-group">
+        <label><strong>Due Date (optional):</strong></label>
+        <input type="date" name="dueDate" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(0,10) : '' %>">
+      </div>
+      <div class="form-group">
+        <label><strong>Due Time (optional):</strong></label>
+        <input type="time" name="dueTime" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(11,16) : '' %>">
+      </div>
+      <button type="submit" class="btn-primary">Preview Changes</button>
     </form>
-
-    <script>
-      const today = new Date().toISOString().split('T')[0];
-      document.querySelector('input[type="date"]').min = today;
-    </script>
-
     <br>
-    <a href="/todos">Back to List</a>
+    <a href="/todos" class="cancel-btn">Back to List</a>
   </div>
 </body>
 </html>
