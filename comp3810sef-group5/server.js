@@ -100,15 +100,15 @@ app.get('/todos', requireAuth, async (req, res) => {
 
   const todos = await db.collection(TODOS_COLL)
     .find(query)
-    .sort({ createdAt: -1, dueDate: 1 }) // Latest first, then by due time
+    .sort({ createdAt: -1 }) // Latest on top
     .toArray();
 
-  res.render('todos', {
-    todos,
-    search,
-    searchDate,
-    msg,
-    username: req.session.username
+  res.render('todos', { 
+    todos, 
+    search, 
+    searchDate, 
+    msg, 
+    username: req.session.username 
   });
 });
 
