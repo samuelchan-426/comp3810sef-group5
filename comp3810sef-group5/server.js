@@ -211,12 +211,14 @@ app.post('/todos/confirm', requireAuth, async (req, res) => {
 
 // === PREVIEW: EDIT TODO ===
 app.post('/todos/edit-preview/:id', requireAuth, async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, dueDate, dueTime } = req.body;
   const todo = await db.collection(TODOS_COLL).findOne({ _id: new ObjectId(req.params.id) });
   if (!todo) return res.redirect('/todos');
   res.render('preview-edit', { 
     title, 
-    description, 
+    description: description || '(none)',
+    dueDate: dueDate || '',
+    dueTime: dueTime || '',
     id: req.params.id 
   });
 });
