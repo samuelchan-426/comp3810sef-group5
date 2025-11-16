@@ -191,15 +191,18 @@ app.get('/todos/preview', requireAuth, (req, res) => {
 
 app.post('/todos/confirm', requireAuth, async (req, res) => {
   const { title, description, dueDate, dueTime } = req.body;
-  let fullDueDate = null;
+// OLD:
+// const dateStr = dueTime ? `${dueDate}T${dueTime}:00` : `${dueDate}T00:00:00`;
+// fullDueDate = new Date(dateStr);
 
-  // Only set if BOTH date AND time are provided OR only date
-  if (dueDate && dueDate !== '' && dueDate !== 'null') {
-    const dateStr = dueTime && dueTime !== '' && dueTime !== 'null' 
-      ? `${dueDate}T${dueTime}:00` 
-      : `${dueDate}T00:00:00`;
-    fullDueDate = new Date(dateStr);
-  }
+// NEW: Save in UTC
+let fullDueDate = null;
+if (dueDate && dueDate !== '') {
+  const [year, month, day] = dueDate.split('-').map(Number);
+  const hours = dueTime ? dueTime.split(':')[0] : 0;
+  const minutes = dueTime ? dueTime.split(':')[1] : 0;
+  fullDueDate = new Date(Date.UTC(year, month - 1, day, hours, minutes, 0));
+}
 
   await db.collection(TODOS_COLL).insertOne({
     title,
@@ -238,14 +241,18 @@ app.get('/todos/edit-preview/:id', requireAuth, async (req, res) => {
 
 app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
   const { title, description, dueDate, dueTime } = req.body;
-  let fullDueDate = null;
+// OLD:
+// const dateStr = dueTime ? `${dueDate}T${dueTime}:00` : `${dueDate}T00:00:00`;
+// fullDueDate = new Date(dateStr);
 
-  if (dueDate && dueDate !== '' && dueDate !== 'null') {
-    const dateStr = dueTime && dueTime !== '' && dueTime !== 'null' 
-      ? `${dueDate}T${dueTime}:00` 
-      : `${dueDate}T00:00:00`;
-    fullDueDate = new Date(dateStr);
-  }
+// NEW: Save in UTC
+let fullDueDate = null;
+if (dueDate && dueDate !== '') {
+  const [year, month, day] = dueDate.split('-').map(Number);
+  const hours = dueTime ? dueTime.split(':')[0] : 0;
+  const minutes = dueTime ? dueTime.split(':')[1] : 0;
+  fullDueDate = new Date(Date.UTC(year, month - 1, day, hours, minutes, 0));
+}
 
   await db.collection(TODOS_COLL).updateOne(
     { _id: new ObjectId(req.params.id) },
