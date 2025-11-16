@@ -40,6 +40,15 @@ const requireAuth = (req, res, next) => {
   res.redirect('/login');
 };
 
+// Helper: Convert HKT input to UTC for storage
+function createHKTDate(dateStr, timeStr) {
+  if (!dateStr) return null;
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const [h = 0, min = 0] = timeStr ? timeStr.split(':').map(Number) : [];
+  const hktDate = new Date(y, m - 1, d, h, min);
+  return new Date(hktDate.getTime() - 8 * 60 * 60 * 1000); // HKT → UTC
+}
+
 // Routes
 app.get('/', (req, res) => res.redirect(req.session.userId ? '/todos' : '/login'));
 
@@ -128,17 +137,13 @@ app.get('/todos/preview', requireAuth, (req, res) => {
 // Confirm Create
 app.post('/todos/confirm', requireAuth, async (req, res) => {
   const { title, description, dueDate, dueTime } = req.body;
-  let fullDueDate = null;
-  if (dueDate && dueDate.trim() !== '') {
-    const [y, m, d] = dueDate.split('-');
-    const [h = 0, min = 0] = dueTime ? dueTime.split(':') : [];
-    fullDueDate = new Date(Date.UTC(y, m-1, d, h, min, 0));
-  }
+  const fullDueDate = createHKTDate(dueDate, dueTime);
 
   await db.collection(TODOS_COLL).insertOne({
     title,
     description: description || null,
     dueDate: fullDueDate,
+    dueTime: dueTime || null,
     userId: req.session.userId,
     username: req.session.username,
     createdAt: new Date()
@@ -169,12 +174,7 @@ app.post('/todos/edit-preview/:id', requireAuth, async (req, res) => {
 // Confirm Update
 app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
   const { title, description, dueDate, dueTime } = req.body;
-  let fullDueDate = null;
-  if (dueDate && dueDate.trim() !== '') {
-    const [y, m, d] = dueDate.split('-');
-    const [h = 0, min = 0] = dueTime ? dueTime.split(':') : [];
-    fullDueDate = new Date(Date.UTC(y, m-1, d, h, min, 0));
-  }
+  const fullDueDate = createHKTDate(dueDate, dueTime);
 
   await db.collection(TODOS_COLL).updateOne(
     { _id: new ObjectId(req.params.id) },
@@ -183,6 +183,7 @@ app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
         title, 
         description: description || null,
         dueDate: fullDueDate,
+        dueTime: dueTime || null,
         updatedAt: new Date(),
         updatedBy: req.session.username
       } 
@@ -287,4 +288,3 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
