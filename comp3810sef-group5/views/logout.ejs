@@ -2,15 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Logged Out</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logged Out – TODO LIST</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <div class="container">
+    <!-- Header -->
     <h1 class="title">TODO LIST</h1>
-    <div class="divider"></div>
+    <div class="divider-long"></div>
+
+    <!-- Success Message -->
     <h2>Successfully logged out!</h2>
-    <p><a href="/login">Back to Login</a></p>
+    <div class="success">
+      <p>You have been securely logged out of your account.</p>
+    </div>
+
+    <!-- Back to Login -->
+    <p class="auth-link">
+      <a href="/login" class="btn-primary">Back to Login</a>
+    </p>
   </div>
 </body>
 </html>
