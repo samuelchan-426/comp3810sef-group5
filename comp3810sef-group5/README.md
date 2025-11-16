@@ -91,7 +91,10 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 - **Port**: `8099` (local), `process.env.PORT` on Azure.  
 - **Deployment**: GitHub → Azure App Service. `MONGO_URI` set in **App Settings**.
 - **REST APIs**: All 8 endpoints (4 for `todos`, 4 for `users`) fully implemented and tested on Ubuntu VM.
+- **Optional Due Date/Time**: Use date/time picker (optional) – shown in list as "Due: [HKT date time]".
+- **Search by Date**: Use date picker – filters and sorts by time.
 
 ---
+
 
 
