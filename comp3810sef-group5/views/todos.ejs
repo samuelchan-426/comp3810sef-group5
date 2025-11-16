@@ -39,11 +39,14 @@
   <div class="container">
     <% if (msg === 'created') { %>
       <div class="success-msg">
-        <p>Todo created successfully!</p>
+        <p><strong>Todo created:</strong> "<%= title || '(No title)' %>"</p>
+        <% if (description) { %>
+          <p><strong>Description:</strong> <%= description %></p>
+        <% } %>
         <% if (dueDate) { %>
-          <p>Due: 
+          <p><strong>Due:</strong> 
             <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
-            <% if (dueTime) { %> at <%= dueTime %> HKT<% } else { %> (No specific time)<% } %>
+            <% if (dueTime) { %> at <%= dueTime %> HKT<% } else { %> (No time)<% } %>
           </p>
         <% } else { %>
           <p>No due date set.</p>
@@ -51,14 +54,12 @@
       </div>
     <% } else if (msg === 'updated') { %>
       <div class="success-msg">
-        <p>Todo updated successfully!</p>
+        <p><strong>Todo updated:</strong> "<%= title || '(No title)' %>"</p>
         <% if (dueDate) { %>
-          <p>New due: 
+          <p><strong>New due:</strong> 
             <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
-            <% if (dueTime) { %> at <%= dueTime %> HKT<% } else { %> (No specific time)<% } %>
+            <% if (dueTime) { %> at <%= dueTime %> HKT<% } %>
           </p>
-        <% } else { %>
-          <p>Due date removed.</p>
         <% } %>
       </div>
     <% } %>
