@@ -84,12 +84,12 @@ app.get('/logout', (req, res) => {
 
 // Todos Page
 app.get('/todos', requireAuth, async (req, res) => {
-  const search = req.query.search || '';
   const msg = req.query.msg || '';
   const title = req.query.title || '';
   const description = req.query.description || '';
   const dueDate = req.query.dueDate || '';
   const dueTime = req.query.dueTime || '';
+  const search = req.query.search || '';
 
   let query = {};
   if (search) {
