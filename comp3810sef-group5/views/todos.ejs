@@ -49,12 +49,19 @@
     <form action="/todos/preview" method="GET">
       <input type="text" name="title" placeholder="Title" required>
       <input type="text" name="description" placeholder="Description">
+      <div class="datetime-picker">
+        <label>Due Date (optional):</label>
+        <input type="date" name="dueDate">
+        <label>Due Time (optional):</label>
+        <input type="time" name="dueTime">
+      </div>
       <button type="submit">Preview & Confirm</button>
     </form>
 
     <h2>Search Todos</h2>
     <form action="/todos" method="GET">
       <input type="text" name="search" value="<%= search %>" placeholder="Search by title...">
+      <input type="date" name="searchDate" value="<%= searchDate %>" placeholder="Search by date...">
       <button>Search</button>
     </form>
 
@@ -83,6 +90,9 @@
                 Added by: <strong><%= todo.username %></strong> on 
                 <%= new Date(todo.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %> at 
                 <%= new Date(todo.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Hong_Kong' }) %> HKT
+              <% } %>
+              <% if (todo.dueDate) { %>
+                <br><small class="due-date">Due: <%= new Date(todo.dueDate).toLocaleString('en-HK', { timeZone: 'Asia/Hong_Kong' }) %></small>
               <% } %>
             </small>
             <div class="actions">
