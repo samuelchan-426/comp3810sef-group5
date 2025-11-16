@@ -31,22 +31,24 @@
     <h2>Edit Todo</h2>
 
     <form action="/todos/edit-preview/<%= todo._id %>" method="POST">
-      <input type="text" name="title" value="<%= todo.title %>" required>
-      <input type="text" name="description" value="<%= todo.description || '' %>">
-      <div class="datetime-picker">
-        <label>Due Date:</label>
-        <input type="date" name="dueDate" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(0,10) : '' %>" min="">
-        <label>Due Time:</label>
-        <input type="time" name="dueTime" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(11,16) : '' %>">
-      </div>
-      <button type="submit">Preview Changes</button>
+      <label><strong>Title:</strong></label>
+      <input type="text" name="title" value="<%= todo.title %>" required style="width:100%; padding:10px; margin-bottom:10px;">
+
+      <label><strong>Description:</strong></label>
+      <input type="text" name="description" value="<%= todo.description || '' %>" style="width:100%; padding:10px; margin-bottom:10px;">
+
+      <label><strong>Due Date (optional):</strong></label>
+      <input type="date" name="dueDate" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(0,10) : '' %>" min="" style="width:100%; padding:10px; margin-bottom:10px;">
+
+      <label><strong>Due Time (optional):</strong></label>
+      <input type="time" name="dueTime" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(11,16) : '' %>" style="width:100%; padding:10px; margin-bottom:10px;">
+
+      <button type="submit" style="padding:10px 20px; background:#3498db; color:white; border:none; border-radius:6px;">Preview Changes</button>
     </form>
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const today = new Date().toISOString().split('T')[0];
-        document.querySelector('input[type="date"]').min = today;
-      });
+      const today = new Date().toISOString().split('T')[0];
+      document.querySelector('input[type="date"]').min = today;
     </script>
 
     <br>
