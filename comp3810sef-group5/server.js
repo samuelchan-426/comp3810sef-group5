@@ -198,7 +198,7 @@ app.post('/todos/delete/:id', requireAuth, async (req, res) => {
   res.redirect('/todos?msg=deleted');
 });
 
-// REST APIs (unchanged)
+// REST APIs
 app.get('/api/todos', async (req, res) => {
   const search = req.query.search || '';
   const query = search ? { title: { $regex: search, $options: 'i' } } : {};
@@ -226,7 +226,7 @@ app.delete('/api/todos/:id', async (req, res) => {
   res.json({ success: true });
 });
 
-// User APIs (unchanged)
+// User APIs
 app.get('/api/users', async (req, res) => {
   try {
     const search = req.query.search || '';
@@ -287,3 +287,4 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
