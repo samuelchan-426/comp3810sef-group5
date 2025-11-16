@@ -93,11 +93,12 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 - **REST APIs**: All 8 endpoints (4 for `todos`, 4 for `users`) fully implemented and tested on Ubuntu VM.
 - **Optional Due Date/Time**: Use date/time picker (optional) – shown in list as "Due: [HKT date time]".
 - **Search by Date**: Use date picker – filters and sorts by time.
-- **Due Date/Time**: Optional. Shown in English (HKT) with countdown: "3 days left", "Overdue", etc.
-- **Sorting**: Latest todos on top.
+- **Due Date/Time**: Optional. No default value. Shown in English (HKT) with live countdown.
 - **Calendar**: Forced to English (`en-GB`).
+- **Sorting**: Latest todos on top.
   
 ---
+
 
 
 
