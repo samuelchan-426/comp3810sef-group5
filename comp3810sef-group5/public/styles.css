@@ -212,12 +212,6 @@ a:hover {
   border: 1px solid #ddd;
   border-radius: 6px;
   margin-bottom: 10px;
-}
-.due-date {
-  color: #e67e22;
-  font-style: italic;
-  margin-top: 5px;
-}
 
 .due-date {
   color: #e67e22;
@@ -229,3 +223,4 @@ a:hover {
   font-weight: bold;
   margin-left: 5px;
 }
+
