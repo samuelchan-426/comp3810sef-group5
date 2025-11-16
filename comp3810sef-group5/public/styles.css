@@ -1,23 +1,428 @@
-/* [ALL STYLES] */
-.form-group { margin-bottom: 15px; text-align: left; }
-.form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
-.btn-primary, .btn-secondary { padding: 12px 20px; border: none; border-radius: 6px; font-size: 1em; cursor: pointer; margin: 10px 5px 0 0; }
-.btn-primary { background: #3498db; color: white; }
-.btn-primary:hover { background: #2980b9; }
-.btn-secondary { background: #95a5a6; color: white; }
-.btn-secondary:hover { background: #7f8c8d; }
-.result-count { color: #2c3e50; font-size: 1.1em; margin: 10px 0; font-weight: 500; }
-.todo-title { font-size: 1.25em; color: #2c3e50; margin: 0 0 5px; display: block; }
-.description { color: #7f8c8d; font-style: italic; font-size: 0.9em; }
-.meta { color: #95a5a6; font-size: 0.85em; display: block; margin: 4px 0; }
-.due-date { color: #e67e22; font-weight: 600; font-size: 0.95em; display: block; margin-top: 6px; }
-.todo-item { background: #f8f9fa; padding: 18px; margin: 12px 0; border-radius: 8px; border-left: 4px solid #3498db; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-.todo-item:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
-.todo-actions { display: flex; gap: 8px; align-items: center; }
-.edit-btn, .delete-btn { padding: 6px 12px; border: none; border-radius: 4px; font-size: 0.9em; cursor: pointer; }
-.edit-btn { background: #3498db; color: white; text-decoration: none; }
-.delete-btn { background: #e74c3c; color: white; }
-.form-auth { max-width: 400px; margin: 0 auto; }
-.auth-link { margin-top: 20px; font-size: 0.95em; color: #7f8c8d; }
-.auth-link a { color: #3498db; font-weight: 600; }
-.auth-link a:hover { text-decoration: underline; }
+/* ========================================
+   GLOBAL & LAYOUT
+   ======================================== */
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f7fa;
+  margin: 0;
+  padding: 0;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+.title {
+  font-size: 2.8em;
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+
+h2 {
+  color: #34495e;
+  margin: 30px 0 15px;
+  font-size: 1.6em;
+}
+
+/* ========================================
+   HEADER & NAV
+   ======================================== */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.header .title {
+  margin: 0;
+}
+
+.logout-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #e74c3c;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+}
+
+/* ========================================
+   DIVIDERS
+   ======================================== */
+.divider {
+  height: 3px;
+  background: #3498db;
+  width: 80px;
+  margin: 20px auto;
+  border-radius: 2px;
+}
+
+.divider-long {
+  height: 3px;
+  background: #3498db;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  border-radius: 2px;
+}
+
+/* ========================================
+   FORMS
+   ======================================== */
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="time"] {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.form-auth {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.datetime-picker {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 15px 0;
+  justify-content: center;
+}
+
+.datetime-picker > div {
+  flex: 1;
+  min-width: 140px;
+}
+
+.datetime-picker label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #34495e;
+  text-align: left;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btn-primary,
+.btn-secondary,
+.confirm-btn,
+.cancel-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin: 10px 5px 0 0;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-primary,
+.confirm-btn {
+  background: #3498db;
+  color: white;
+}
+
+.btn-primary:hover,
+.confirm-btn:hover {
+  background: #2980b9;
+}
+
+.btn-secondary {
+  background: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #7f8c8d;
+}
+
+.cancel-btn {
+  background: #95a5a6;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #7f8c8d;
+}
+
+/* ========================================
+   MESSAGES
+   ======================================== */
+.success,
+.success-msg {
+  background: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 1em;
+  text-align: left;
+}
+
+.success p,
+.success-msg p {
+  margin: 6px 0;
+}
+
+.error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  text-align: left;
+}
+
+/* ========================================
+   TODO LIST
+   ======================================== */
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+
+.todo-item {
+  background: #f8f9fa;
+  padding: 18px;
+  margin: 12px 0;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.todo-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.todo-content {
+  flex: 1;
+}
+
+.todo-title {
+  font-size: 1.25em;
+  color: #2c3e50;
+  margin: 0 0 5px;
+  display: block;
+}
+
+.description {
+  color: #7f8c8d;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.meta {
+  color: #95a5a6;
+  font-size: 0.85em;
+  display: block;
+  margin: 4px 0;
+}
+
+.due-date {
+  color: #e67e22;
+  font-weight: 600;
+  font-size: 0.95em;
+  display: block;
+  margin-top: 6px;
+}
+
+.result-count {
+  color: #2c3e50;
+  font-size: 1.1em;
+  margin: 10px 0;
+  font-weight: 500;
+}
+
+.no-todos {
+  color: #e74c3c;
+  font-style: italic;
+  margin: 20px 0;
+}
+
+/* ========================================
+   ACTIONS
+   ======================================== */
+.todo-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.edit-btn {
+  background: #3498db;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #2980b9;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+/* ========================================
+   PREVIEW & CONFIRM
+   ======================================== */
+.preview-box {
+  background: #f8f9fa;
+  padding: 18px;
+  border-radius: 8px;
+  margin: 20px 0;
+  border-left: 4px solid #3498db;
+  text-align: left;
+  font-size: 0.95em;
+}
+
+.preview-box p {
+  margin: 8px 0;
+}
+
+.preview-box strong {
+  color: #2c3e50;
+}
+
+/* ========================================
+   AUTH LINKS
+   ======================================== */
+.auth-link {
+  margin-top: 20px;
+  font-size: 0.95em;
+  color: #7f8c8d;
+  text-align: center;
+}
+
+.auth-link a {
+  color: #3498db;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+.auth-link .btn-primary {
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* ========================================
+   LINKS & MISC
+   ======================================== */
+a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.owner {
+  color: #7f8c8d;
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 10px;
+  display: block;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 480px) {
+  .container {
+    margin: 20px 15px;
+    padding: 20px;
+  }
+  .title {
+    font-size: 2.2em;
+  }
+  .datetime-picker {
+    flex-direction: column;
+  }
+  .todo-actions {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .edit-btn, .delete-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
