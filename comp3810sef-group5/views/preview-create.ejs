@@ -16,6 +16,9 @@
     <div class="preview-box">
       <p><strong>Title:</strong> <%= title %></p>
       <p><strong>Description:</strong> <%= description || '(none)' %></p>
+      <% if (dueDate || dueTime) { %>
+        <p><strong>Due:</strong> <%= dueDate %> <%= dueTime || '' %></p>
+      <% } %>
     </div>
     <form action="/todos/confirm" method="POST">
       <input type="hidden" name="title" value="<%= title %>">
