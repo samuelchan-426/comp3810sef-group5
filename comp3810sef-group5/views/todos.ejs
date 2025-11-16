@@ -5,13 +5,18 @@
   <title>Todo List</title>
   <link rel="stylesheet" href="/styles.css">
   <script>
-    // Force ALL date/time inputs to English
     document.addEventListener('DOMContentLoaded', () => {
+      // Force English calendar
       const inputs = document.querySelectorAll('input[type="date"], input[type="time"]');
       inputs.forEach(input => {
         input.lang = 'en-GB';
         input.setAttribute('lang', 'en-GB');
-        input.style.fontFamily = 'Arial, sans-serif';
+      });
+
+      // Disable past dates
+      const today = new Date().toISOString().split('T')[0];
+      document.querySelectorAll('input[type="date"]').forEach(dateInput => {
+        dateInput.setAttribute('min', today);
       });
     });
   </script>
