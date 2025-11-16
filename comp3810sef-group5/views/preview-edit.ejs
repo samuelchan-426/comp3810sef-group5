@@ -16,16 +16,18 @@
     <div class="preview-box">
       <p><strong>New Title:</strong> <%= title %></p>
       <p><strong>New Description:</strong> <%= description %></p>
-      <% if (dueDate || dueTime) { %>
+      <% if (dueDate && dueDate !== '' && dueDate !== 'null') { %>
+        <% 
+          const dateStr = dueTime && dueTime !== '' && dueTime !== 'null' 
+            ? `${dueDate}T${dueTime}:00` 
+            : `${dueDate}T00:00:00`;
+          const due = new Date(dateStr);
+        %>
         <p><strong>Due:</strong> 
-          <%= new Date(dueDate + (dueTime ? 'T' + dueTime : '')).toLocaleString('en-GB', { 
-            timeZone: 'Asia/Hong_Kong',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true
+          <%= due.toLocaleString('en-GB', { 
+            timeZone: 'Asia/Hong_Kong', 
+            year: 'numeric', month: 'short', day: 'numeric', 
+            hour: '2-digit', minute: '2-digit', hour12: true 
           }) %> HKT
         </p>
       <% } else { %>
