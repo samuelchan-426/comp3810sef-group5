@@ -92,14 +92,8 @@ app.get('/todos', requireAuth, async (req, res) => {
   const dueTime = req.query.dueTime || '';
 
   let query = {};
-  if (search) query.title = { $regex: search, $options: 'i' };
-
-  if (searchDate) {
-    // Convert local date (e.g. 2025-11-12) to UTC range
-    const localDate = new Date(searchDate);
-    const utcStart = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate(), 0, 0, 0));
-    const utcEnd = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate(), 23, 59, 59, 999));
-    query.dueDate = { $gte: utcStart, $lte: utcEnd };
+  if (search) {
+    query.title = { $regex: search, $options: 'i' };
   }
 
   const todos = await db.collection(TODOS_COLL)
