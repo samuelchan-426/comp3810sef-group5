@@ -94,10 +94,14 @@ Edited: `Edited by: alice on 15 Nov 2025 at 5:05 PM HKT`
 - **Optional Due Date/Time**: Use date/time picker (optional) – shown in list as "Due: [HKT date time]".
 - **Search by Date**: Use date picker – filters and sorts by time.
 - **Due Date/Time**: Optional. No default value. Shown in English (HKT) with live countdown.
-- **Calendar**: Forced to English (`en-GB`).
+- **Calendar**: Fully in English (`en-GB`), past dates disabled.
+- **Preview**: Shows "No due time" if only date set.
+- **Search**: Exact date filter.
 - **Sorting**: Latest todos on top.
+- **Countdown**: Clickable link with live countdown.
   
 ---
+
 
 
 
