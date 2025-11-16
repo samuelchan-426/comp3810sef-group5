@@ -85,8 +85,9 @@ app.get('/logout', (req, res) => {
 // Todos Page
 app.get('/todos', requireAuth, async (req, res) => {
   const search = req.query.search || '';
-  const searchDate = req.query.searchDate || '';
   const msg = req.query.msg || '';
+  const title = req.query.title || '';
+  const description = req.query.description || '';
   const dueDate = req.query.dueDate || '';
   const dueTime = req.query.dueTime || '';
 
@@ -110,7 +111,9 @@ app.get('/todos', requireAuth, async (req, res) => {
     todos, 
     search, 
     msg, 
-    dueDate, 
+    title,
+    description,
+    dueDate,
     dueTime,
     username: req.session.username 
   });
@@ -214,7 +217,7 @@ if (dueDate && dueDate.trim() !== '') {
     username: req.session.username,
     createdAt: new Date()
   });
-  res.redirect(`/todos?msg=created&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
+  res.redirect(`/todos?msg=created&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description || '')}&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
 });
 
 // === PREVIEW: EDIT TODO ===
@@ -267,7 +270,7 @@ if (dueDate && dueDate.trim() !== '') {
       } 
     }
   );
-  res.redirect(`/todos?msg=updated&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
+  res.redirect(`/todos?msg=updated&title=${encodeURIComponent(title)}&description=${encodeURIComponent(description || '')}&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
 });
 
 // ========================================
