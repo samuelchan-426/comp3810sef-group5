@@ -39,11 +39,11 @@
       </div>
       <div class="form-group">
         <label><strong>Due Date (optional):</strong></label>
-        <input type="date" name="dueDate" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(0,10) : '' %>">
+        <input type="date" name="dueDate" value="<%= todo.dueDate ? new Date(todo.dueDate).toLocaleDateString('en-CA') : '' %>">
       </div>
       <div class="form-group">
         <label><strong>Due Time (optional):</strong></label>
-        <input type="time" name="dueTime" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(11,16) : '' %>">
+        <input type="time" name="dueTime" value="<%= todo.dueTime || '' %>">
       </div>
       <button type="submit" class="btn-primary">Preview Changes</button>
     </form>
