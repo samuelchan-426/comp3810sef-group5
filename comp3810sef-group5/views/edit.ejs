@@ -35,9 +35,9 @@
       <input type="text" name="description" value="<%= todo.description || '' %>" placeholder="Description">
       <div class="datetime-picker">
         <label>Due Date (optional):</label>
-        <input type="date" name="dueDate" value="">
+        <input type="date" name="dueDate" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(0,10) : '' %>" min="">
         <label>Due Time (optional):</label>
-        <input type="time" name="dueTime" value="">
+        <input type="time" name="dueTime" value="<%= todo.dueDate ? new Date(todo.dueDate).toISOString().slice(11,16) : '' %>" min="">
       </div>
       <button type="submit">Preview Changes</button>
     </form>
