@@ -119,7 +119,6 @@
                 <% 
                   const due = new Date(todo.dueDate);
                   const hktDate = due.toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' });
-                  const hktTime = due.toLocaleTimeString('en-GB', { timeZone: 'Asia/Hong_Kong', hour: '2-digit', minute: '2-digit', hour12: true });
                   const now = new Date();
                   const diffMs = due - now;
                   const diffDays = Math.floor(diffMs / (1000*60*60*24));
@@ -131,7 +130,13 @@
                   else countdown = 'Due soon';
                 %>
                 <br><small class="due-date">
-                  Due: <%= hktDate %> at <%= hktTime %> HKT — <%= countdown %>
+                  Due: <%= hktDate %>
+                  <% if (todo.dueTime) { %>
+                    at <%= todo.dueTime %> HKT
+                  <% } else { %>
+                    (No time)
+                  <% } %>
+                  — <%= countdown %>
                 </small>
               <% } else { %>
                 <br><small class="due-date">No due date</small>
