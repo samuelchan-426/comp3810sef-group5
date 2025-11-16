@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="/styles.css">
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Force English calendar + disable past dates
       const today = new Date().toISOString().split('T')[0];
       document.querySelectorAll('input[type="date"]').forEach(input => {
         input.lang = 'en-GB';
@@ -21,14 +20,12 @@
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
     <div class="header">
       <h1 class="title">Todo List</h1>
       <a href="/logout" class="logout-btn">Logout</a>
     </div>
     <div class="divider-long"></div>
 
-    <!-- Success Message -->
     <% if (msg === 'created') { %>
       <div class="success-msg">
         <p><strong>Todo created:</strong> "<%= title || 'Untitled' %>"</p>
@@ -52,8 +49,6 @@
             <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
             <% if (dueTime) { %> at <%= dueTime %> HKT<% } %>
           </p>
-        <% } else { %>
-          <p>Due date removed.</p>
         <% } %>
       </div>
     <% } else if (msg === 'deleted') { %>
@@ -62,7 +57,6 @@
       </div>
     <% } %>
 
-    <!-- Create New Todo -->
     <h2>Create New Todo</h2>
     <form action="/todos/preview" method="GET" class="form-create">
       <div class="form-group">
@@ -86,7 +80,6 @@
 
     <div class="divider"></div>
 
-    <!-- Search Todos -->
     <h2>Search Todos</h2>
     <form action="/todos" method="GET" class="form-search">
       <div class="form-group">
@@ -97,10 +90,9 @@
 
     <div class="divider"></div>
 
-    <!-- Todo List -->
     <h2>Todo List</h2>
     <p class="result-count">
-      <strong><%= todos.length %> item(s) found</strong>
+      <strong><%= totalFound %> item(s) found</strong>
       <% if (search) { %> for "<%= search %>"<% } %>
     </p>
 
@@ -130,8 +122,8 @@
                   const hktTime = due.toLocaleTimeString('en-GB', { timeZone: 'Asia/Hong_Kong', hour: '2-digit', minute: '2-digit', hour12: true });
                   const now = new Date();
                   const diffMs = due - now;
-                  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-                  const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                  const diffDays = Math.floor(diffMs / (1000*60*60*24));
+                  const diffHours = Math.floor((diffMs % (1000*60*60*24)) / (1000*60*60));
                   let countdown = '';
                   if (diffMs < 0) countdown = 'Overdue';
                   else if (diffDays > 0) countdown = `${diffDays} day${diffDays > 1 ? 's' : ''} left`;
