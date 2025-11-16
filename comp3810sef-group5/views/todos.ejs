@@ -1,67 +1,160 @@
-<!-- Success Message -->
-<% if (msg === 'created') { %>
-  <div class="success-msg">
-    <p><strong>Todo created:</strong> "<%= title || 'Untitled' %>"</p>
-    <% if (description && description !== '(none)') { %>
-      <p><strong>Description:</strong> <%= description %></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Force English calendar + disable past dates
+      const today = new Date().toISOString().split('T')[0];
+      document.querySelectorAll('input[type="date"]').forEach(input => {
+        input.lang = 'en-GB';
+        input.min = today;
+      });
+      document.querySelectorAll('input[type="time"]').forEach(input => {
+        input.lang = 'en-GB';
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="title">Todo List</h1>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+    <div class="divider-long"></div>
+
+    <!-- Success Message -->
+    <% if (msg === 'created') { %>
+      <div class="success-msg">
+        <p><strong>Todo created:</strong> "<%= title || 'Untitled' %>"</p>
+        <% if (description && description !== '(none)') { %>
+          <p><strong>Description:</strong> <%= description %></p>
+        <% } %>
+        <% if (dueDate) { %>
+          <p><strong>Due:</strong> 
+            <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
+            <% if (dueTime) { %> at <%= dueTime %> HKT<% } else { %> (No time)<% } %>
+          </p>
+        <% } else { %>
+          <p>No due date set.</p>
+        <% } %>
+      </div>
+    <% } else if (msg === 'updated') { %>
+      <div class="success-msg">
+        <p><strong>Todo updated:</strong> "<%= title || 'Untitled' %>"</p>
+        <% if (dueDate) { %>
+          <p><strong>New due:</strong> 
+            <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
+            <% if (dueTime) { %> at <%= dueTime %> HKT<% } %>
+          </p>
+        <% } else { %>
+          <p>Due date removed.</p>
+        <% } %>
+      </div>
+    <% } else if (msg === 'deleted') { %>
+      <div class="success-msg">
+        <p>Todo deleted successfully.</p>
+      </div>
     <% } %>
-    <% if (dueDate) { %>
-      <p><strong>Due:</strong> 
-        <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
-        <% if (dueTime) { %> at <%= dueTime %> HKT<% } else { %> (No time)<% } %>
-      </p>
+
+    <!-- Create New Todo -->
+    <h2>Create New Todo</h2>
+    <form action="/todos/preview" method="GET" class="form-create">
+      <div class="form-group">
+        <input type="text" name="title" placeholder="Title" required>
+      </div>
+      <div class="form-group">
+        <input type="text" name="description" placeholder="Description">
+      </div>
+      <div class="datetime-picker">
+        <div class="form-group">
+          <label>Due Date (optional):</label>
+          <input type="date" name="dueDate">
+        </div>
+        <div class="form-group">
+          <label>Due Time (optional):</label>
+          <input type="time" name="dueTime">
+        </div>
+      </div>
+      <button type="submit" class="btn-primary">Preview & Confirm</button>
+    </form>
+
+    <div class="divider"></div>
+
+    <!-- Search Todos -->
+    <h2>Search Todos</h2>
+    <form action="/todos" method="GET" class="form-search">
+      <div class="form-group">
+        <input type="text" name="search" value="<%= search %>" placeholder="Search by title..." class="search-input">
+      </div>
+      <button type="submit" class="btn-secondary">Search</button>
+    </form>
+
+    <div class="divider"></div>
+
+    <!-- Todo List -->
+    <h2>Todo List</h2>
+    <p class="result-count">
+      <strong><%= todos.length %> item(s) found</strong>
+      <% if (search) { %> for "<%= search %>"<% } %>
+    </p>
+
+    <% if (todos.length === 0) { %>
+      <p class="no-todos">No todos found.</p>
     <% } else { %>
-      <p>No due date set.</p>
+      <ul class="todo-list">
+        <% todos.forEach(todo => { %>
+          <li class="todo-item">
+            <div class="todo-content">
+              <strong class="todo-title"><%= todo.title %></strong>
+              <% if (todo.description) { %>
+                <br><small class="description">(<%= todo.description %>)</small>
+              <% } else { %>
+                <br><small class="description">(No description)</small>
+              <% } %>
+              <br>
+              <% if (todo.updatedBy) { %>
+                <small class="meta">Edited by: <strong><%= todo.updatedBy %></strong> on <%= new Date(todo.updatedAt).toLocaleString('en-GB', { timeZone: 'Asia/Hong_Kong' }) %> HKT</small>
+              <% } else { %>
+                <small class="meta">Added by: <strong><%= todo.username %></strong> on <%= new Date(todo.createdAt).toLocaleString('en-GB', { timeZone: 'Asia/Hong_Kong' }) %> HKT</small>
+              <% } %>
+              <% if (todo.dueDate) { %>
+                <% 
+                  const due = new Date(todo.dueDate);
+                  const hktDate = due.toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' });
+                  const hktTime = due.toLocaleTimeString('en-GB', { timeZone: 'Asia/Hong_Kong', hour: '2-digit', minute: '2-digit', hour12: true });
+                  const now = new Date();
+                  const diffMs = due - now;
+                  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                  const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                  let countdown = '';
+                  if (diffMs < 0) countdown = 'Overdue';
+                  else if (diffDays > 0) countdown = `${diffDays} day${diffDays > 1 ? 's' : ''} left`;
+                  else if (diffHours > 0) countdown = `${diffHours} hour${diffHours > 1 ? 's' : ''} left`;
+                  else countdown = 'Due soon';
+                %>
+                <br><small class="due-date">
+                  Due: <%= hktDate %> at <%= hktTime %> HKT — <%= countdown %>
+                </small>
+              <% } else { %>
+                <br><small class="due-date">No due date</small>
+              <% } %>
+            </div>
+            <div class="todo-actions">
+              <a href="/todos/edit/<%= todo._id %>" class="btn edit-btn">Edit</a>
+              <form action="/todos/delete/<%= todo._id %>" method="POST" style="display:inline;">
+                <button type="submit" class="btn delete-btn" onclick="return confirm('Delete this todo?');">Delete</button>
+              </form>
+            </div>
+          </li>
+        <% }); %>
+      </ul>
     <% } %>
   </div>
-<% } else if (msg === 'updated') { %>
-  <div class="success-msg">
-    <p><strong>Todo updated:</strong> "<%= title || 'Untitled' %>"</p>
-    <% if (dueDate) { %>
-      <p><strong>New due:</strong> 
-        <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
-        <% if (dueTime) { %> at <%= dueTime %> HKT<% } %>
-      </p>
-    <% } %>
-  </div>
-<% } else if (msg === 'deleted') { %>
-  <div class="success-msg">
-    <p>Todo deleted successfully.</p>
-  </div>
-<% } %>
-
-<!-- Search Result Count -->
-<p class="result-count">
-  <strong><%= totalFound %> item(s) found</strong>
-  <% if (search) { %> for "<%= search %>"<% } %>
-</p>
-
-<!-- Todo Item -->
-<strong class="todo-title"><%= todo.title %></strong>
-<% if (todo.description) { %>
-  <br><small class="description">(<%= todo.description %>)</small>
-<% } else { %>
-  <br><small class="description">(No description)</small>
-<% } %>
-
-<% if (todo.dueDate) { %>
-  <% 
-    const due = new Date(todo.dueDate);
-    const hktDate = due.toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' });
-    const hktTime = due.toLocaleTimeString('en-GB', { timeZone: 'Asia/Hong_Kong', hour: '2-digit', minute: '2-digit', hour12: true });
-    const now = new Date();
-    const diffMs = due - now;
-    const diffDays = Math.floor(diffMs / (1000*60*60*24));
-    const diffHours = Math.floor((diffMs % (1000*60*60*24)) / (1000*60*60));
-    let countdown = '';
-    if (diffMs < 0) countdown = 'Overdue';
-    else if (diffDays > 0) countdown = `${diffDays} day${diffDays > 1 ? 's' : ''} left`;
-    else if (diffHours > 0) countdown = `${diffHours} hour${diffHours > 1 ? 's' : ''} left`;
-    else countdown = 'Due soon';
-  %>
-  <br><small class="due-date">
-    Due: <%= hktDate %> at <%= hktTime %> HKT — <%= countdown %>
-  </small>
-<% } else { %>
-  <br><small class="due-date">No due date</small>
-<% } %>
+</body>
+</html>
