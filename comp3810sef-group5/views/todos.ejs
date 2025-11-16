@@ -131,7 +131,7 @@
                 %>
                 <br><small class="due-date">
                   Due: <%= hktDate %>
-                  <% if (todo.dueTime) { %>
+                  <% if (todo.dueTime && todo.dueTime.trim() !== '') { %>
                     at <%= todo.dueTime %> HKT
                   <% } else { %>
                     (No time)
