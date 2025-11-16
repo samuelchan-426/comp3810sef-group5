@@ -30,8 +30,8 @@
       <% } %>
     </div>
     <form action="/todos/confirm" method="POST">
-      <input type="hidden" name="title" value="<%= title %>">
-      <input type="hidden" name="description" value="<%= description %>">
+      <input type="hidden" name="dueDate" value="<%= dueDate %>">
+      <input type="hidden" name="dueTime" value="<%= dueTime %>">
       <button class="confirm-btn">Confirm Create</button>
       <a href="/todos" class="cancel-btn">Cancel</a>
     </form>
