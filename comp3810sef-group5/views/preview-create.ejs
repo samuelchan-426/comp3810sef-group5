@@ -18,10 +18,7 @@
       <p><strong>Description:</strong> <%= description %></p>
       <% if (dueDate) { %>
         <p><strong>Due Date:</strong> 
-          <%= new Date(dueDate).toLocaleDateString('en-GB', { 
-            timeZone: 'Asia/Hong_Kong', 
-            day: 'numeric', month: 'short', year: 'numeric' 
-          }) %>
+          <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong' }) %>
         </p>
         <% if (dueTime) { %>
           <p><strong>Due Time:</strong> <%= dueTime %></p>
