@@ -30,9 +30,9 @@
     <div class="divider-long"></div>
 
     <!-- Success Message -->
-    <% if (msg === 'created') { %>
+   <% if (msg === 'created') { %>
       <div class="success-msg">
-        <p><strong>Todo created:</strong> "<%= title || '(No title)' %>"</p>
+        <p><strong>Todo created:</strong> "<%= title || 'Untitled' %>"</p>
         <% if (description) { %>
           <p><strong>Description:</strong> <%= description %></p>
         <% } %>
@@ -47,7 +47,7 @@
       </div>
     <% } else if (msg === 'updated') { %>
       <div class="success-msg">
-        <p><strong>Todo updated:</strong> "<%= title || '(No title)' %>"</p>
+        <p><strong>Todo updated:</strong> "<%= title || 'Untitled' %>"</p>
         <% if (dueDate) { %>
           <p><strong>New due:</strong> 
             <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' }) %>
@@ -56,6 +56,10 @@
         <% } else { %>
           <p>Due date removed.</p>
         <% } %>
+      </div>
+    <% } else if (msg === 'deleted') { %>
+      <div class="success-msg">
+        <p>Todo deleted successfully.</p>
       </div>
     <% } %>
 
@@ -86,6 +90,7 @@
 
     <!-- Todo List -->
     <h2>Todo List</h2>
+    <p><strong><%= todos.length %> item(s) found</strong><% if (search) { %> for "<%= search %>"<% } %></p>
     <% if (todos.length === 0) { %>
       <p class="no-todos">No todos found.</p>
     <% } else { %>
@@ -110,18 +115,9 @@
                   const due = new Date(todo.dueDate);
                   const hktDate = due.toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong', day: 'numeric', month: 'short', year: 'numeric' });
                   const hktTime = due.toLocaleTimeString('en-GB', { timeZone: 'Asia/Hong_Kong', hour: '2-digit', minute: '2-digit', hour12: true });
-                  const now = new Date();
-                  const diffMs = due - now;
-                  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-                  const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                  let countdown = '';
-                  if (diffMs < 0) countdown = 'Overdue';
-                  else if (diffDays > 0) countdown = `${diffDays} day${diffDays > 1 ? 's' : ''} left`;
-                  else if (diffHours > 0) countdown = `${diffHours} hour${diffHours > 1 ? 's' : ''} left`;
-                  else countdown = 'Due soon';
                 %>
                 <br><small class="due-date">
-                  Due: <%= hktDate %> at <%= hktTime %> HKT — <%= countdown %>
+                  Due: <%= hktDate %> at <%= hktTime %> HKT
                 </small>
               <% } else { %>
                 <br><small class="due-date">No due date</small>
