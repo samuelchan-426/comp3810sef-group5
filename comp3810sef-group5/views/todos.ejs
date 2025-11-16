@@ -37,6 +37,23 @@
 </head>
 <body>
   <div class="container">
+    <% if (msg === 'created') { %>
+      <div class="success-msg">
+        <p>Todo created successfully!</p>
+        <% if (dueDate) { %>
+          <p>Due: 
+            <%= new Date(dueDate).toLocaleDateString('en-GB', { timeZone: 'Asia/Hong_Kong' }) %>
+            <% if (dueTime) { %> at <%= dueTime %> <% } else { %>(No specific time)<% } %>
+          </p>
+        <% } else { %>
+          <p>No due date set.</p>
+        <% } %>
+      </div>
+    <% } else if (msg === 'updated') { %>
+      <div class="success-msg">
+        <p>Todo updated successfully!</p>
+      </div>
+    <% } %>
     <!-- Delete Confirm Modal -->
     <div id="deleteModal" class="delete-modal">
       <div class="modal-content">
@@ -90,9 +107,8 @@
 
     <h2>Search Todos</h2>
     <form action="/todos" method="GET">
-      <input type="text" name="search" value="<%= search %>" placeholder="Search by title...">
-      <input type="date" name="searchDate" value="<%= searchDate %>" placeholder="Search by date...">
-      <button>Search</button>
+      <input type="text" name="search" value="<%= search %>" placeholder="Search by title..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+      <button type="submit" style="margin-top: 10px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 6px;">Search</button>
     </form>
 
     <% if (search) { %>
