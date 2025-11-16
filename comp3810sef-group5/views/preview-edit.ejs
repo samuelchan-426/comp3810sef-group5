@@ -14,22 +14,20 @@
     <div class="divider-long"></div>
     <h2>Preview Changes</h2>
     <div class="preview-box">
-      <p><strong>New Title:</strong> <%= title %></p>
-      <p><strong>New Description:</strong> <%= description %></p>
-      <% if (dueDate && dueDate !== '' && dueDate !== 'null') { %>
-        <% 
-          const dateStr = dueTime && dueTime !== '' && dueTime !== 'null' 
-            ? `${dueDate}T${dueTime}:00` 
-            : `${dueDate}T00:00:00`;
-          const due = new Date(dateStr);
-        %>
-        <p><strong>Due:</strong> 
-          <%= due.toLocaleString('en-GB', { 
+      <p><strong>Title:</strong> <%= title %></p>
+      <p><strong>Description:</strong> <%= description %></p>
+      <% if (dueDate) { %>
+        <p><strong>Due Date:</strong> 
+          <%= new Date(dueDate).toLocaleDateString('en-GB', { 
             timeZone: 'Asia/Hong_Kong', 
-            year: 'numeric', month: 'short', day: 'numeric', 
-            hour: '2-digit', minute: '2-digit', hour12: true 
-          }) %> HKT
+            day: 'numeric', month: 'short', year: 'numeric' 
+          }) %>
         </p>
+        <% if (dueTime) { %>
+          <p><strong>Due Time:</strong> <%= dueTime %></p>
+        <% } else { %>
+          <p><strong>Due Time:</strong> No due time</p>
+        <% } %>
       <% } else { %>
         <p><strong>Due:</strong> No due date</p>
       <% } %>
