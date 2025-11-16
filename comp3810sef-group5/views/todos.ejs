@@ -26,6 +26,12 @@
     </div>
     <div class="divider-long"></div>
 
+    <% if (welcome) { %>
+      <div class="success">
+        <p>Welcome, <strong><%= username %>!</strong> You're now logged in.</p>
+      </div>
+    <% } %>
+    
     <% if (msg === 'created') { %>
       <div class="success-msg">
         <p><strong>Todo created:</strong> "<%= title || 'Untitled' %>"</p>
