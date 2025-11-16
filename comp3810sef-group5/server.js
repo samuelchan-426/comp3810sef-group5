@@ -192,11 +192,8 @@ app.post('/todos/confirm', requireAuth, async (req, res) => {
   const { title, description, dueDate, dueTime } = req.body;
   let fullDueDate = null;
   if (dueDate) {
-    fullDueDate = new Date(dueDate);
-    if (dueTime) {
-      const [hours, minutes] = dueTime.split(':');
-      fullDueDate.setHours(hours, minutes, 0);
-    }
+    const dateStr = dueTime ? `${dueDate}T${dueTime}:00` : `${dueDate}T00:00:00`;
+    fullDueDate = new Date(dateStr); // Local → will be converted to UTC
   }
   await db.collection(TODOS_COLL).insertOne({
     title,
@@ -237,11 +234,8 @@ app.post('/todos/update-confirm/:id', requireAuth, async (req, res) => {
   const { title, description, dueDate, dueTime } = req.body;
   let fullDueDate = null;
   if (dueDate) {
-    fullDueDate = new Date(dueDate);
-    if (dueTime) {
-      const [hours, minutes] = dueTime.split(':');
-      fullDueDate.setHours(hours, minutes, 0);
-    }
+    const dateStr = dueTime ? `${dueDate}T${dueTime}:00` : `${dueDate}T00:00:00`;
+    fullDueDate = new Date(dateStr);
   }
   await db.collection(TODOS_COLL).updateOne(
     { _id: new ObjectId(req.params.id) },
