@@ -133,7 +133,8 @@
                   Due: <%= hktDate %>
                   <% if (todo.dueTime && todo.dueTime.trim() !== '') { %>
                     at <%= todo.dueTime %> HKT
-                  <% } else { %>
+                  <% } %>
+                  <% if (!todo.dueTime || todo.dueTime.trim() === '') { %>
                     (No time)
                   <% } %>
                   — <%= countdown %>
