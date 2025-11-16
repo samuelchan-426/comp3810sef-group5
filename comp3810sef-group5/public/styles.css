@@ -212,6 +212,7 @@ a:hover {
   border: 1px solid #ddd;
   border-radius: 6px;
   margin-bottom: 10px;
+}
 
 .due-date {
   color: #e67e22;
@@ -224,3 +225,11 @@ a:hover {
   margin-left: 5px;
 }
 
+.countdown-link {
+  color: #c0392b;
+  text-decoration: underline;
+  font-weight: bold;
+}
+.countdown-link:hover {
+  color: #e74c3c;
+}
