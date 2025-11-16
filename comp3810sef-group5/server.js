@@ -87,6 +87,8 @@ app.get('/todos', requireAuth, async (req, res) => {
   const search = req.query.search || '';
   const searchDate = req.query.searchDate || '';
   const msg = req.query.msg || '';
+  const dueDate = req.query.dueDate || '';
+  const dueTime = req.query.dueTime || '';
 
   let query = {};
   if (search) query.title = { $regex: search, $options: 'i' };
@@ -107,8 +109,9 @@ app.get('/todos', requireAuth, async (req, res) => {
   res.render('todos', { 
     todos, 
     search, 
-    searchDate, 
     msg, 
+    dueDate, 
+    dueTime,
     username: req.session.username 
   });
 });
@@ -212,7 +215,7 @@ if (dueDate && dueDate !== '') {
     username: req.session.username,
     createdAt: new Date()
   });
-  res.redirect('/todos?msg=created');
+  res.redirect(`/todos?msg=created&dueDate=${encodeURIComponent(dueDate || '')}&dueTime=${encodeURIComponent(dueTime || '')}`);
 });
 
 // === PREVIEW: EDIT TODO ===
