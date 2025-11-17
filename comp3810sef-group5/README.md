@@ -51,16 +51,35 @@ comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
   - `Edited by: alice on 17 Nov 2025, 00:05 HKT`  
   - **Due Date/Time**: Optional, shown as `Due: 18 Nov 2025 at 20:20 HKT — 1 day left` or `(No time)` if only date set.
 
-- **Use of your RESTful CRUD services**:
+- **Use of RESTful CRUD services**:
 ### RESTful APIs – **TODOS** (no authentication)
 
 | Method | URI | cURL Command |
 |--------|-----|--------------|
 | **GET** | `/api/todos` | `curl http://localhost:8099/api/todos` |
-| **GET (search)** | `/api/todos?search=test` | `curl "http://localhost:8099/api/todos?search=test"` |
-| **GET (by date)** | `/api/todos?search=2025-11-25` | `curl "http://localhost:8099/api/todos?search=2025-11-25"` |
-| **POST** | `/api/todos` | `curl -X POST http://localhost:8099/api/todos -H "Content-Type: application/json" -d '{"title":"Buy milk","description":"2L","dueDate":"2025-11-25","dueTime":"20:00"}'` |
-| **PUT** | `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk","description":"1L"}'`|
+| **GET (search by title)** | `/api/todos?search=test` | `curl "http://localhost:8099/api/todos?search=test"` |
+| **GET (search by date)** | `/api/todos?search=2025-11-25` | `curl "http://localhost:8099/api/todos?search=2025-11-25"` |
+| **POST (create only title)** | `/api/todos` | `curl -X POST http://localhost:8099/api/todos -H "Content-Type: application/json" -d '{"title":"Urgent Task"}'` |
+| **POST (create title and description)** | `/api/todos` | `curl -X POST http://localhost:8099/api/todos -H "Content-Type: application/json" -d '{"title":"Buy milk","description":"2L"}'` |
+| **POST (create title, description and dueDate)** | `/api/todos` | `curl -X POST http://localhost:8099/api/todos -H "Content-Type: application/json" -d '{"title":"Buy milk","description":"2L","dueDate":"2025-11-25"}'` |
+| **POST (create all)** | `/api/todos` | `curl -X POST http://localhost:8099/api/todos -H "Content-Type: application/json" -d '{"title":"Buy milk","description":"2L","dueDate":"2025-11-25","dueTime":"20:00"}'` |
+| **POST (create title and dueDate)** | `/api/todos` | `curl -X POST http://localhost:8099/api/todos -H "Content-Type: application/json" -d '{"title":"Buy milk","dueDate":"2025-11-25"}'` |
+| **POST (create title, dueDate and dueTime)** | `/api/todos` | `curl -X POST http://localhost:8099/api/todos -H "Content-Type: application/json" -d '{"title":"Buy milk","dueDate":"2025-11-25","dueTime":"20:00"}'` |
+|**PUT (update only title)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk"}'`|
+|**PUT (update only description)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"description":"1L"}'`|
+|**PUT (update only dueDate)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"dueDate":"2025-12-12"}'`|
+|**PUT (update only dueTime)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"dueTime":"23:00"}'`|
+| **PUT (update title and description)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk","description":"1L"}'`|
+| **PUT (update title and dueDate)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk","dueDate":"2025-12-12"}'`|
+| **PUT (update title and dueTime)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk","dueTime":"23:00"}'`|
+| **PUT (update description and dueDate)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"description":"1L","dueDate":"2025-12-12"}'`|
+| **PUT (update description and dueTime)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"description":"1L","dueTime":"23:00"}'`|
+| **PUT (update dueDate and dueTime)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"dueDate":"2025-12-12","dueTime":"23:00"}'`|
+|**PUT (update title, description and dueDate)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk","description":"1L","dueDate":"2025-12-12"}'`|
+|**PUT (update title, description and dueTime)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk","description":"1L","dueTime":"23:00"}'`|
+|**PUT (update title, dueDate and dueTime)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk","dueDate":"2025-12-12","dueTime":"23:00"}'`|
+|**PUT (update description, dueDate and dueTime)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"description":"1L","dueDate":"2025-12-12","dueTime":"23:00"}'`|
+|**PUT (update all)**| `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk","description":"1L","dueDate":"2025-12-12","dueTime":"23:00"}'`|
 | **DELETE** | `/api/todos/:id` | `curl -X DELETE http://localhost:8099/api/todos/id (input your id generate from above command)` |
 
 ### RESTful APIs – **USERS** (no authentication)
@@ -85,7 +104,7 @@ comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
 - **Delete Confirmation**: Uses **browser `confirm()` dialog**.  
 - **Port**: `8099` (local), `process.env.PORT` on Azure.  
 - **Deployment**: GitHub → Azure App Service. `MONGO_URI` set in **App Settings**.  
-- **REST APIs**: All 8 endpoints (5 for `todos`, 4 for `users`) fully implemented and tested.  
+- **REST APIs**: All 10 endpoints (6 for `todos`, 4 for `users`) fully implemented and tested.  
 - **Optional Due Date/Time**: Use date/time picker – shown in list as "Due: [HKT date time]".  
 - **Search by Date**: Fixed timezone bug – now returns correct todos.  
 - **Due Date/Time**: Optional. No default value. Shown in English (HKT) with live countdown.  
@@ -94,6 +113,6 @@ comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
 - **Sorting**: Latest todos on top.  
 - **Countdown**: "X days left", "Due soon", "Overdue".
 - **Welcome message on login**: one-time flash: `Welcome, [username]! You're now logged in.`
-- **Filter by due date using calendar** – pick any date → see all todos due that day.
+- **Date search in web UI + REST API** – `YYYY-MM-DD` full-day match.
 
 ---
