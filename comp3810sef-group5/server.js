@@ -238,17 +238,38 @@ app.get('/api/todos', async (req, res) => {
 });
 
 app.post('/api/todos', async (req, res) => {
-  const { title, description } = req.body;
-  const result = await db.collection(TODOS_COLL).insertOne({ title, description });
-  res.json({ id: result.insertedId });
+  const { title, description, dueDate, dueTime } = req.body;
+  if (!title) return res.status(400).json({ error: 'Title required' });
+
+  const todo = {
+    title,
+    description: description || '',
+    dueDate: dueDate ? new Date(dueDate) : null,
+    dueTime: dueTime || '',
+    createdAt: new Date()
+  };
+
+  const result = await db.collection(TODOS_COLL).insertOne(todo);
+  res.json({ id: result.insertedId, ...todo });
 });
 
 app.put('/api/todos/:id', async (req, res) => {
-  const { title, description } = req.body;
-  await db.collection(TODOS_COLL).updateOne(
+  const updates = {};
+  if (req.body.title !== undefined) updates.title = req.body.title;
+  if (req.body.description !== undefined) updates.description = req.body.description;
+  if (req.body.dueDate !== undefined) updates.dueDate = req.body.dueDate ? new Date(req.body.dueDate) : null;
+  if (req.body.dueTime !== undefined) updates.dueTime = req.body.dueTime;
+
+  if (Object.keys(updates).length === 0) {
+    return res.status(400).json({ error: 'No fields to update' });
+  }
+
+  const result = await db.collection(TODOS_COLL).updateOne(
     { _id: new ObjectId(req.params.id) },
-    { $set: { title, description } }
+    { $set: updates }
   );
+
+  if (result.matchedCount === 0) return res.status(404).json({ error: 'Not found' });
   res.json({ success: true });
 });
 
@@ -318,6 +339,7 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
 
 
 
