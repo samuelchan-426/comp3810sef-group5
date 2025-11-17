@@ -93,16 +93,28 @@ app.get('/logout', (req, res) => {
 
 // Todos Page
 app.get('/todos', requireAuth, async (req, res) => {
-  const msg = req.query.msg || '';
+  let { search = '', msg = '', welcome } = req.query;
   const title = req.query.title || '';
   const description = req.query.description || '';
   const dueDate = req.query.dueDate || '';
   const dueTime = req.query.dueTime || '';
-  const search = req.query.search || '';
 
   let query = {};
   if (search) {
-    query.title = { $regex: search, $options: 'i' };
+    const dateRegex = /^(\d{1,2})\s([A-Z]{3})\s(\d{4})$/;
+    const dateMatch = search.match(dateRegex);
+
+    if (dateMatch) {
+      const day = dateMatch[1].padStart(2, '0');
+      const month = dateMatch[2];
+      const year = dateMatch[3];
+      const monthMap = { JAN: '01', FEB: '02', MAR: '03', APR: '04', MAY: '05', JUN: '06',
+                        JUL: '07', AUG: '08', SEP: '09', OCT: '10', NOV: '11', DEC: '12' };
+      const isoDate = `${year}-${monthMap[month]}-${day}`;
+      query.dueDate = new Date(isoDate);
+    } else {
+      query.title = { $regex: search, $options: 'i' };
+    }
   }
 
   const todos = await db.collection(TODOS_COLL)
@@ -110,17 +122,17 @@ app.get('/todos', requireAuth, async (req, res) => {
     .sort({ createdAt: -1 })
     .toArray();
 
-  res.render('todos', { 
-    todos, 
-    search, 
-    msg, 
+  res.render('todos', {
+    todos,
+    search,
+    msg,
     title,
     description,
     dueDate,
     dueTime,
     username: req.session.username,
     totalFound: todos.length,
-    welcome: req.query.welcome === 'true'
+    welcome: welcome === 'true'
   });
 });
 
@@ -289,6 +301,7 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
 
 
 
