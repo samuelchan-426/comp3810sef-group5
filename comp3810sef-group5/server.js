@@ -231,8 +231,28 @@ app.post('/todos/delete/:id', requireAuth, async (req, res) => {
 
 // REST APIs
 app.get('/api/todos', async (req, res) => {
-  const search = req.query.search || '';
-  const query = search ? { title: { $regex: search, $options: 'i' } } : {};
+  const search = req.query.search?.trim();
+  let query = {};
+
+  if (search) {
+    // 1. Try title search (partial, case-insensitive)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(search)) {
+      query.title = { $regex: search, $options: 'i' };
+    } 
+    // 2. Try date search: YYYY-MM-DD
+    else {
+      const targetDate = new Date(search);
+      if (!isNaN(targetDate)) {
+        const start = new Date(targetDate);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(targetDate);
+        end.setHours(23, 59, 59, 999);
+
+        query.dueDate = { $gte: start, $lte: end };
+      }
+    }
+  }
+
   const todos = await db.collection(TODOS_COLL).find(query).toArray();
   res.json(todos);
 });
@@ -339,6 +359,7 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
 
 
 
