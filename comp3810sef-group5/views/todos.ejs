@@ -133,10 +133,11 @@
   <!-- DATE SEARCH SCRIPT -->
   <script>
     function filterByDate() {
-      const date = document.getElementById('dateFilter').value;
-      if (date) {
-        const [y, m, d] = date.split('-');
-        const formatted = `${parseInt(d)} ${new Date(date).toLocaleString('en-GB', { month: 'short' }).toUpperCase()} ${y}`;
+      const dateInput = document.getElementById('dateFilter').value;
+      if (dateInput) {
+        const [y, m, d] = dateInput.split('-');
+        const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+        const formatted = `${parseInt(d)} ${monthNames[parseInt(m)-1]} ${y}`;
         window.location.href = `/todos?search=${encodeURIComponent(formatted)}`;
       }
     }
@@ -146,10 +147,10 @@
       window.location.href = '/todos';
     }
 
-    // Auto-focus search on load
+    // Set min date to today
     document.addEventListener('DOMContentLoaded', () => {
       const today = new Date().toISOString().split('T')[0];
-      const dateInput = document.querySelector('input[type="date"]');
+      const dateInput = document.querySelector('input[name="dueDate"]');
       if (dateInput) dateInput.min = today;
     });
   </script>
