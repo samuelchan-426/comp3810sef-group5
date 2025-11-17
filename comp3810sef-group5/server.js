@@ -100,20 +100,37 @@ app.get('/todos', requireAuth, async (req, res) => {
   const dueTime = req.query.dueTime || '';
 
   let query = {};
-  if (search) {
-    const dateRegex = /^(\d{1,2})\s([A-Z]{3})\s(\d{4})$/;
-    const dateMatch = search.match(dateRegex);
 
-    if (dateMatch) {
-      const day = dateMatch[1].padStart(2, '0');
-      const month = dateMatch[2];
-      const year = dateMatch[3];
-      const monthMap = { JAN: '01', FEB: '02', MAR: '03', APR: '04', MAY: '05', JUN: '06',
-                        JUL: '07', AUG: '08', SEP: '09', OCT: '10', NOV: '11', DEC: '12' };
-      const isoDate = `${year}-${monthMap[month]}-${day}`;
-      query.dueDate = new Date(isoDate);
+  if (search.trim()) {
+    // Try to parse as "25 NOV 2025"
+    const dateRegex = /^(\d{1,2})\s([A-Z]{3})\s(\d{4})$/;
+    const match = search.trim().match(dateRegex);
+
+    if (match) {
+      const day = match[1].padStart(2, '0');
+      const monthAbbr = match[2].toUpperCase();
+      const year = match[3];
+
+      const monthMap = {
+        JAN: '01', FEB: '02', MAR: '03', APR: '04', MAY: '05', JUN: '06',
+        JUL: '07', AUG: '08', SEP: '09', OCT: '10', NOV: '11', DEC: '12'
+      };
+
+      if (monthMap[monthAbbr]) {
+        const isoDateStr = `${year}-${monthMap[monthAbbr]}-${day}`;
+        const targetDate = new Date(isoDateStr);
+
+        // Match full day: from 00:00 to 23:59:59
+        const start = new Date(targetDate);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(targetDate);
+        end.setHours(23, 59, 59, 999);
+
+        query.dueDate = { $gte: start, $lte: end };
+      }
     } else {
-      query.title = { $regex: search, $options: 'i' };
+      // Regular title search
+      query.title = { $regex: search.trim(), $options: 'i' };
     }
   }
 
@@ -301,6 +318,7 @@ app.delete('/api/users/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
 
 
 
