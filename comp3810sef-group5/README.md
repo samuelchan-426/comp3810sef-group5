@@ -15,7 +15,7 @@ Qiu Yiu Fung, 13488063
 
 # 2. Project file intro:
 
-- **server.js**: Including Express web server setup, MongoDB Atlas connection, secure login/logout using `cookie-session` and `bcrypt`, full CRUD operations with double confirmation (preview → confirm) for create/edit/delete, ownership tracking (`Added by`, `Edited by`), welcome message on login, HKT timestamps, search with partial match, and RESTful APIs for both `todos` and `users`.  
+- **server.js**: Including Express web server setup, MongoDB Atlas connection, secure login/logout using `cookie-session` and `bcrypt`, full CRUD operations with double confirmation (preview → confirm) for create/edit/delete, ownership tracking (`Added by`, `Edited by`), welcome message on login, HKT timestamps, search with partial match of title, search by due date, and RESTful APIs for both `todos` and `users`.  
 - **package.json**: lists of dependencies, including `express`, `mongodb`, `ejs`, `cookie-session`, `bcrypt`.  
 - **public (folder)**: Contains `styles.css` for responsive, modern UI with centered header, top-right logout button, full-width divider, preview boxes, and consistent button styles.  
 - **views (folder)**: Contains `login.ejs`, `signup.ejs`, `todos.ejs`, `edit.ejs`, `logout.ejs`, `preview-create.ejs`, `preview-edit.ejs` – all with consistent branding, editable forms, preview steps, and double-confirmation dialogs.  
@@ -42,7 +42,7 @@ comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
   | Action | UI Flow |
   |--------|-------|
   | **Create** | Fill **Title**, **Description(optional)**, **Due Date/Time (optional)** → **Preview & Confirm** → **Confirm Create** → **"Todo created successfully!"** |
-  | **Read**   | View list → **Search by title** (partial, case-insensitive) → shows **"X item(s) found"** |
+  | **Read**   | View list → **Search by title** (partial, case-insensitive) or **Search by date** (using calendar to pick a date)→ shows **"X item(s) found"** |
   | **Update** | Click **Edit** → modify → **Preview Changes** → **Confirm Update** → **"Todo updated successfully!"** |
   | **Delete** | Click **Delete** → browser `confirm()` → **Yes** → **"Todo deleted successfully!"** |
 
@@ -58,7 +58,8 @@ comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
 |--------|-----|--------------|
 | **GET** | `/api/todos` | `curl http://localhost:8099/api/todos` |
 | **GET (search)** | `/api/todos?search=test` | `curl "http://localhost:8099/api/todos?search=test"` |
-| **POST** | `/api/todos` | `curl -X POST http://localhost:8099/api/todos -H "Content-Type: application/json" -d '{"title":"Buy milk","description":"2L"}'` |
+| **GET (by date)** | `/api/todos?search=2025-11-25` | `curl "http://localhost:8099/api/todos?search=2025-11-25"` |
+| **POST** | `/api/todos` | `curl -X POST http://localhost:8099/api/todos -H "Content-Type: application/json" -d '{"title":"Buy milk","description":"2L","dueDate":"2025-11-25","dueTime":"20:00"}'` |
 | **PUT** | `/api/todos/:id` | `curl -X PUT http://localhost:8099/api/todos/id (input your id generate from above command) -H "Content-Type: application/json" -d '{"title":"Buy almond milk","description":"1L"}'`|
 | **DELETE** | `/api/todos/:id` | `curl -X DELETE http://localhost:8099/api/todos/id (input your id generate from above command)` |
 
@@ -92,6 +93,7 @@ comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
 - **Preview**: Shows "No due time" if only date set.  
 - **Sorting**: Latest todos on top.  
 - **Countdown**: "X days left", "Due soon", "Overdue".
-- **New Feature**: **Welcome message on login** – one-time flash: `Welcome, [username]! You're now logged in.`
+- **Welcome message on login**: one-time flash: `Welcome, [username]! You're now logged in.`
+- **Filter by due date using calendar** – pick any date → see all todos due that day.
 
 ---
