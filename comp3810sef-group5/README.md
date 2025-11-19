@@ -102,7 +102,6 @@ comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
 - **Timestamps**: Stored in UTC, displayed in **HKT (Asia/Hong_Kong)**.  
 - **User Safety**: All CRUD actions require **preview + confirmation**.  
 - **Delete Confirmation**: Uses **browser `confirm()` dialog**.  
-- **Port**: `8099` (local), `process.env.PORT` on Azure.  
 - **Deployment**: GitHub → Azure App Service. `MONGO_URI` set in **App Settings**.  
 - **REST APIs**: All 29 endpoints (25 for `todos`, 4 for `users`) fully implemented and tested.  
 - **Optional Due Date/Time**: Use date/time picker – shown in list as "Due: [HKT date time]".  
@@ -116,3 +115,4 @@ comp3810sef-group05-dde7gmfhezhvb9gm.southafricanorth-01.azurewebsites.net
 - **Date search in web UI + REST API** – `YYYY-MM-DD` full-day match.
 
 ---
+
